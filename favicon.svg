@@ -1,4 +1,12 @@
 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32">
-  <rect x="1" y="1" width="30" height="30" rx="6" fill="#FAF7F2" stroke="#191D23" stroke-width="1.5"/>
-  <polyline points="6,21 10,12 14,18 18,8 22,16 26,12" fill="none" stroke="#2456A6" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
+  <style>
+    .bg { fill: #FAF7F2; stroke: #191D23; }
+    .line { stroke: #2456A6; }
+    @media (prefers-color-scheme: dark) {
+      .bg { fill: #15181C; stroke: #E9E6DF; }
+      .line { stroke: #5B8FD9; }
+    }
+  </style>
+  <rect class="bg" x="1" y="1" width="30" height="30" rx="6" stroke-width="1.5"/>
+  <polyline class="line" points="6,21 10,12 14,18 18,8 22,16 26,12" fill="none" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/>
 </svg>

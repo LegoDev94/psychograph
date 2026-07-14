@@ -1,8 +1,8 @@
-/* Результат (M3): график-профиль, таблица шкал, достоверность, экспорт, бесплатное резюме */
-import { initChrome, results, chartColors, fmtDate, toast, esc } from './common.js';
+/* Результат (M3): перьевой график-профиль, таблица шкал, достоверность, экспорт, бесплатное резюме */
+import { initChrome, results, fmtDate, toast, esc } from './common.js';
 import { TEST } from '../data/mmil.js';
 import { tBand, BAND_LABELS } from './engine.js';
-import { buildProfileOption, mountProfileChart } from './profile-chart.js';
+import { mountResultProfile, exportProfilePNG } from './psy-render.js';
 
 initChrome('history');
 
@@ -48,17 +48,14 @@ function renderResult(r) {
   $('validity-flags').innerHTML = r.validity.flags.map(f =>
     `<div class="callout ${f.level === 'invalid' ? 'danger' : 'warn'}"><p class="mb-0">${esc(f.text)}</p></div>`).join('');
 
-  /* --- график --- */
-  const el = $('profile-chart');
-  let getChart = null;
-  if (window.echarts) {
-    getChart = mountProfileChart(el, () => buildProfileOption({
-      scales: TEST.scales, t: r.t, colors: chartColors(),
-    }));
-  } else {
-    el.innerHTML = '<p class="muted" style="padding:40px 20px;text-align:center">Не удалось загрузить библиотеку графика — точные значения по всем шкалам приведены в таблице ниже.</p>';
-    $('btn-png').disabled = true;
-  }
+  /* --- перьевой график (тот же язык, что в герое; темизация через CSS) --- */
+  mountResultProfile({
+    svg: $('profile-chart'),
+    stage: $('profile-stage'),
+    tip: $('profile-tip'),
+    scales: TEST.scales,
+    t: r.t,
+  });
 
   /* --- таблица --- */
   const tbody = document.querySelector('#scale-table tbody');
@@ -101,8 +98,12 @@ function renderResult(r) {
   if (r.paid && r.interpretation) $('btn-analysis').textContent = 'Открыть ИИ-интерпретацию →';
 
   $('btn-png').addEventListener('click', () => {
-    if (!getChart) return;
-    const url = getChart().getDataURL({ type: 'png', pixelRatio: 2, backgroundColor: chartColors().paper });
+    const url = exportProfilePNG({
+      scales: TEST.scales,
+      t: r.t,
+      caption: `протокол ${protocol} · ${fmtDate(r.date)} · ${formLabel} · коридор нормы 30–70`,
+      subcaption: 'Демо-версия · результат не является медицинским диагнозом · legodev94.github.io/psychograph',
+    });
     const a = document.createElement('a');
     a.href = url;
     a.download = `mmil-profile-${r.id}.png`;

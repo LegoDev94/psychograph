@@ -43,7 +43,10 @@
           <span class="psy-rec"><span class="psy-rec-dot" aria-hidden="true"></span> запись профиля</span>
           <span class="psy-archetype mono" id="protocol-label"></span>
         </div>
-        <div id="profile-chart" role="img" aria-label="Личностный профиль ММИЛ: T-баллы по 13 шкалам, коридор нормы 30–70. Точные значения — в таблице ниже."></div>
+        <div class="psy-stage" id="profile-stage">
+          <svg id="profile-chart" role="img" aria-label="Личностный профиль ММИЛ: T-баллы по 13 шкалам, коридор нормы 30–70. Точные значения — в таблице ниже."></svg>
+          <div class="psy-tip" id="profile-tip" hidden></div>
+        </div>
         <figcaption class="frame-cap">
           <span>Рис. 1 — личностный профиль ММИЛ</span>
           <span id="chart-cap-form">T-баллы · коридор нормы 30–70</span>
@@ -99,7 +102,6 @@
 </main>
 
 <footer id="site-footer"></footer>
-<script src="assets/vendor/echarts.min.js"></script>
 <script type="module" src="assets/js/results.js"></script>
 </body>
 </html>
