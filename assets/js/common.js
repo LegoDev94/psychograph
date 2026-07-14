@@ -169,6 +169,37 @@ export function initChrome(active = '') {
   }
 
   initRise();
+  initHeaderAutoHide();
+
+  /* офлайн-кэш для PWA */
+  if ('serviceWorker' in navigator && location.protocol === 'https:') {
+    navigator.serviceWorker.register('sw.js').catch(() => {});
+  }
+}
+
+/* на мобильных шапка прячется при скролле вниз и возвращается при скролле вверх */
+function initHeaderAutoHide() {
+  const header = document.getElementById('site-header');
+  if (!header) return;
+  let lastY = window.scrollY;
+  let ticking = false;
+  const apply = () => {
+    ticking = false;
+    const y = window.scrollY;
+    const dy = y - lastY;
+    lastY = y;
+    if (!matchMedia('(max-width: 860px)').matches) { setHidden(false); return; }
+    if (header.querySelector('.site-nav.open')) { setHidden(false); return; }
+    if (y > 160 && dy > 6) setHidden(true);
+    else if (dy < -6 || y < 80) setHidden(false);
+  };
+  const setHidden = hidden => {
+    header.classList.toggle('header-hidden', hidden);
+    document.body.classList.toggle('pg-header-hidden', hidden);
+  };
+  window.addEventListener('scroll', () => {
+    if (!ticking) { ticking = true; requestAnimationFrame(apply); }
+  }, { passive: true });
 }
 
 /* мягкое появление карточек при попадании во вьюпорт (все страницы) */

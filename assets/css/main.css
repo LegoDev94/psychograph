@@ -189,7 +189,11 @@ p { margin: 0 0 1em; }
   backdrop-filter: blur(10px);
   -webkit-backdrop-filter: blur(10px);
   border-bottom: 1px solid var(--hairline);
+  transition: transform 0.28s ease;
 }
+.site-header.header-hidden { transform: translateY(-100%); }
+body.pg-header-hidden .progress-rail { top: 0; }
+.progress-rail { transition: top 0.28s ease; }
 .site-header .container {
   height: var(--header-h);
   display: flex; align-items: center; gap: 26px;
@@ -639,8 +643,17 @@ p { margin: 0 0 1em; }
   padding: 10px 0;
 }
 .progress-rail .container { display: flex; align-items: center; gap: 16px; max-width: 820px; }
-.progress-track { flex: 1; height: 4px; background: var(--paper-3); border-radius: 2px; overflow: hidden; }
-.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.25s ease; }
+.progress-track { flex: 1; height: 4px; background: var(--paper-3); border-radius: 2px; overflow: hidden; position: relative; }
+.progress-track::after {
+  /* деления на 25 / 50 / 75 % */
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background:
+    linear-gradient(var(--hairline-strong), var(--hairline-strong)) 25% 0 / 1.5px 100% no-repeat,
+    linear-gradient(var(--hairline-strong), var(--hairline-strong)) 50% 0 / 1.5px 100% no-repeat,
+    linear-gradient(var(--hairline-strong), var(--hairline-strong)) 75% 0 / 1.5px 100% no-repeat;
+  opacity: 0.6;
+}
+.progress-fill { height: 100%; background: var(--accent); border-radius: 2px; transition: width 0.25s ease; position: relative; z-index: 1; }
 .progress-label { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-2); white-space: nowrap; }
 
 .q-card {
@@ -875,6 +888,33 @@ p { margin: 0 0 1em; }
   .tl-item { padding-top: 0; padding-left: 0; }
   .tl-item::before { left: -26px; top: 2px; }
 }
+
+/* библиография — как в монографии */
+.bibliography {
+  list-style: none; margin: 0; padding: 0;
+  counter-reset: bib; max-width: 74ch;
+  font-size: 0.92rem; color: var(--ink-2);
+}
+.bibliography li {
+  counter-increment: bib;
+  padding: 10px 0 10px 3em; text-indent: -3em;
+  border-top: 1px solid var(--hairline);
+}
+.bibliography li:last-child { border-bottom: 1px solid var(--hairline); }
+.bibliography li::before {
+  content: "[" counter(bib) "]";
+  font-family: var(--font-mono); font-size: 0.8rem; color: var(--accent);
+  margin-right: 1em;
+}
+.bibliography em { font-style: italic; color: var(--ink); }
+
+/* чернильные виньетки пустых состояний */
+.vignette { display: block; width: 168px; height: auto; margin: 0 auto 18px; }
+.vignette .vg-frame { fill: none; stroke: var(--hairline-strong); stroke-width: 1.5; stroke-dasharray: 4 6; }
+.vignette .vg-line { fill: none; stroke: var(--accent); stroke-width: 2.2; stroke-linecap: round; stroke-linejoin: round; }
+.vignette .vg-ghost { fill: none; stroke: var(--hairline-strong); stroke-width: 1.5; stroke-dasharray: 2 6; stroke-linecap: round; }
+.vignette .vg-pen { fill: var(--accent-2); }
+.vignette .vg-dot { fill: var(--accent); }
 
 /* липкое оглавление статьи */
 .about-layout { display: grid; grid-template-columns: 190px minmax(0, 1fr); gap: clamp(24px, 4vw, 56px); align-items: start; margin-top: 34px; }

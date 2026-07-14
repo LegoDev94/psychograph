@@ -109,9 +109,27 @@ function render() {
 let advanceTimer = null; // защита от двойного продвижения (двойной клик / автоповтор клавиши)
 const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
+const MILESTONES = [
+  [25, 'Четверть пути позади'],
+  [50, 'Половина теста — отличный темп'],
+  [75, 'Финишная прямая: осталась четверть'],
+];
+
+function checkMilestones() {
+  const share = Object.keys(session.answers).length / TEST.items.length * 100;
+  session.milestones = session.milestones || [];
+  for (const [m, text] of MILESTONES) {
+    if (share >= m && !session.milestones.includes(m)) {
+      session.milestones.push(m);
+      toast(text, 2600);
+    }
+  }
+}
+
 function setAnswer(v) {
   const item = TEST.items[session.idx];
   session.answers[item.id] = v;
+  checkMilestones();
   persist();
   render();
   if (!reducedMotion) {
