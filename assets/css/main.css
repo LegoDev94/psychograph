@@ -556,6 +556,21 @@ p { margin: 0 0 1em; }
 .quiz-hint { text-align: center; font-size: 0.8rem; color: var(--ink-3); margin-top: 22px; }
 .quiz-hint kbd { font-family: var(--font-mono); border: 1px solid var(--hairline); border-radius: 3px; padding: 0 5px; }
 
+/* экран «расчёт профиля» */
+.calc-steps {
+  list-style: none; margin: 18px auto 4px; padding: 0;
+  max-width: 46ch; text-align: left;
+  display: flex; flex-direction: column; gap: 10px;
+}
+.calc-steps li {
+  font-family: var(--font-mono); font-size: 0.82rem; color: var(--ink-3);
+  display: flex; gap: 10px; align-items: baseline;
+  opacity: 0.45; transition: opacity 0.3s, color 0.3s;
+}
+.calc-steps li::before { content: "○"; color: var(--hairline-strong); flex: none; transition: color 0.3s; }
+.calc-steps li.done { opacity: 1; color: var(--ink-2); }
+.calc-steps li.done::before { content: "✓"; color: var(--ok); }
+
 /* стартовый экран теста */
 .consent-box { display: flex; flex-direction: column; gap: 14px; }
 .consent-box label.check {

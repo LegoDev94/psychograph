@@ -212,5 +212,23 @@ $('btn-compute').addEventListener('click', () => {
   results.save(result);
   session.finished = true;
   store.remove(SESSION_KEY);
-  location.href = 'results.html?rid=' + result.id;
+
+  const go = () => { location.href = 'results.html?rid=' + result.id; };
+  if (reducedMotion) { go(); return; }
+
+  /* короткая «лабораторная» пауза: этапы расчёта появляются друг за другом */
+  const card = document.querySelector('#screen-finish .card');
+  card.innerHTML = `
+    <div class="overline" style="justify-content:center"><span class="num">Т-03</span> Обработка протокола</div>
+    <h2 tabindex="-1" id="calc-title">Строим ваш профиль</h2>
+    <ul class="calc-steps" aria-live="polite">
+      <li>Подсчёт сырых баллов по ключам ${session.form === 'male' ? 'мужской' : 'женской'} формы</li>
+      <li>K-коррекция: Hs +0.5·K · Pd +0.4·K · Pt +1.0·K · Sc +1.0·K · Ma +0.2·K</li>
+      <li>Перевод в T-баллы: T = 50 + 10·(X − M)/σ</li>
+      <li>Оценка достоверности: L · F · K · F−K</li>
+    </ul>`;
+  card.querySelector('#calc-title').focus({ preventScroll: true });
+  const items = card.querySelectorAll('.calc-steps li');
+  items.forEach((li, i) => setTimeout(() => li.classList.add('done'), 300 + i * 420));
+  setTimeout(go, 300 + items.length * 420 + 480);
 });
