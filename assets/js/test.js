@@ -64,17 +64,28 @@ function persist() {
 }
 
 function startQuiz() {
-  show('quiz');
   $('q-form').textContent = session.form === 'male' ? 'мужская форма' : 'женская форма';
-  render();
+  render(); // рендер до show(): фокус ставится уже на актуальный текст утверждения
+  show('quiz');
 }
+
+let lastIdx = -1;
 
 function render() {
   const i = session.idx;
   const item = TEST.items[i];
   const total = TEST.items.length;
   $('q-num').textContent = `Утверждение ${i + 1} из ${total}`;
-  $('q-text').textContent = item.text;
+  const qText = $('q-text');
+  qText.textContent = item.text;
+  if (!reducedMotion && lastIdx !== -1 && lastIdx !== i) {
+    const dir = i > lastIdx ? 1 : -1; // вперёд — въезжает справа, назад — слева
+    qText.animate(
+      [{ opacity: 0, transform: `translateX(${dir * 16}px)` }, { opacity: 1, transform: 'none' }],
+      { duration: 230, easing: 'cubic-bezier(0.2, 0.7, 0.2, 1)' }
+    );
+  }
+  lastIdx = i;
 
   const a = session.answers[item.id];
   document.querySelectorAll('.answer-btn').forEach(btn => {
@@ -96,12 +107,19 @@ function render() {
 }
 
 let advanceTimer = null; // защита от двойного продвижения (двойной клик / автоповтор клавиши)
+const reducedMotion = matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 function setAnswer(v) {
   const item = TEST.items[session.idx];
   session.answers[item.id] = v;
   persist();
   render();
+  if (!reducedMotion) {
+    document.querySelector('.answer-btn.selected')?.animate(
+      [{ transform: 'scale(1)' }, { transform: 'scale(1.045)' }, { transform: 'scale(1)' }],
+      { duration: 180, easing: 'ease-out' }
+    );
+  }
   clearTimeout(advanceTimer);
   advanceTimer = setTimeout(next, 160); // короткая пауза, чтобы был виден выбор
 }

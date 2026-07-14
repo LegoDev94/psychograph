@@ -576,6 +576,52 @@ p { margin: 0 0 1em; }
 
 /* ============ результаты ============ */
 .result-head { display: flex; flex-wrap: wrap; align-items: flex-end; justify-content: space-between; gap: 18px; }
+
+/* стат-плитки протокола */
+.stat-tiles {
+  display: grid; grid-template-columns: repeat(4, 1fr);
+  border: 1px solid var(--hairline); border-radius: var(--radius-lg);
+  background: var(--paper); box-shadow: var(--shadow-card);
+  margin-top: 22px; overflow: hidden;
+}
+.stat-tile {
+  display: flex; flex-direction: column; gap: 3px;
+  padding: 16px 18px 14px;
+  min-width: 0;
+}
+.stat-tile + .stat-tile { border-left: 1px solid var(--hairline); }
+.stat-label {
+  font-family: var(--font-mono); font-size: 0.66rem; font-weight: 500;
+  text-transform: uppercase; letter-spacing: 0.12em; color: var(--ink-3);
+}
+.stat-value { font-size: 1.3rem; font-weight: 600; color: var(--ink); line-height: 1.2; }
+.stat-value.mono { font-family: var(--font-mono); font-weight: 500; }
+.stat-sub { font-size: 0.76rem; color: var(--ink-3); }
+@media (max-width: 720px) {
+  .stat-tiles { grid-template-columns: 1fr 1fr; }
+  .stat-tile:nth-child(3) { border-left: none; }
+  .stat-tile:nth-child(n+3) { border-top: 1px solid var(--hairline); }
+}
+@media (max-width: 420px) {
+  .stat-tiles { grid-template-columns: 1fr; }
+  .stat-tile { border-left: none !important; }
+  .stat-tile + .stat-tile { border-top: 1px solid var(--hairline); }
+  .stat-value { font-size: 1.15rem; }
+}
+
+/* поэтапное появление строк таблицы шкал */
+@media (prefers-reduced-motion: no-preference) {
+  tr.row-in { animation: row-in 0.45s both; animation-delay: var(--row-d, 0ms); }
+  @keyframes row-in { from { opacity: 0; } }
+}
+
+/* печатная шапка протокола */
+.print-head {
+  display: flex; justify-content: space-between; align-items: baseline;
+  border-bottom: 2px solid #000; padding-bottom: 8px; margin-bottom: 16px;
+  font-size: 0.9rem;
+}
+.print-brand { font-family: var(--font-display); font-weight: 700; font-size: 1.1rem; }
 .chart-frame {
   background: var(--paper); border: 1px solid var(--hairline); border-radius: var(--radius-lg);
   box-shadow: var(--shadow-card); padding: 20px 8px 6px; margin-top: 26px;
@@ -713,13 +759,27 @@ dialog.modal::backdrop { background: rgba(12, 14, 18, 0.5); backdrop-filter: blu
   }
   body { background: #fff !important; color: #000; }
   .site-header, .site-footer, .result-actions, .toast-zone, .no-print, .progress-rail { display: none !important; }
-  .chart-frame, .ai-report, .card, .hero-chart-frame { box-shadow: none !important; border-color: #bbb; }
-  .rise, .reveal { opacity: 1 !important; transform: none !important; animation: none !important; }
+  .chart-frame, .ai-report, .card, .hero-chart-frame, .stat-tiles { box-shadow: none !important; border-color: #bbb; }
+  .rise, .reveal, tr.row-in { opacity: 1 !important; transform: none !important; animation: none !important; }
+  .psy-rec { display: none !important; } /* индикатор «записи» не имеет смысла на бумаге */
   .section { padding: 18px 0; }
   a { color: #000; text-decoration: none; }
   .print-only { display: block !important; }
 }
 .print-only { display: none; }
+
+/* ============ финальный CTA с водяным профилем ============ */
+.cta-final { position: relative; overflow: hidden; }
+.cta-final .container { position: relative; z-index: 1; }
+.cta-watermark {
+  position: absolute; inset: auto 0 -12%; width: 100%; height: auto;
+  pointer-events: none; z-index: 0;
+}
+.cta-watermark polyline {
+  fill: none; stroke: var(--accent); stroke-width: 2;
+  opacity: 0.07; stroke-linejoin: round; stroke-linecap: round;
+}
+.cta-watermark circle { fill: var(--accent); opacity: 0.07; }
 
 /* ============ мелочи ============ */
 .hr-hair { border: none; border-top: 1px solid var(--hairline); margin: 26px 0; }

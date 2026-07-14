@@ -21,8 +21,26 @@ if (!result) {
 
 function renderResult(r) {
   const formLabel = r.form === 'male' ? 'мужская форма' : 'женская форма';
+  const protocol = '№ ' + r.id.slice(-6).toUpperCase();
   $('result-meta').textContent = `${fmtDate(r.date)} · ${formLabel} · отвечено ${r.answered} из ${TEST.items.length}, «не знаю» — ${r.unknown}`;
   $('chart-cap-form').textContent = `${formLabel} · T-баллы · коридор нормы 30–70`;
+  $('protocol-label').textContent = `протокол ${protocol}`;
+  $('print-protocol').textContent = `протокол ${protocol} · ${fmtDate(r.date)}`;
+
+  /* --- стат-плитки --- */
+  const clinicalScales = TEST.scales.filter(s => s.group === 'clinical');
+  const peak = clinicalScales.reduce((a, s) => r.t[s.code] > r.t[a.code] ? s : a, clinicalScales[0]);
+  const inCorridor = clinicalScales.filter(s => r.t[s.code] >= 30 && r.t[s.code] <= 70).length;
+  const vTile = {
+    ok: '<span class="badge badge-ok">достоверен</span>',
+    caution: '<span class="badge badge-warn">с осторожностью</span>',
+    invalid: '<span class="badge badge-danger">сомнителен</span>',
+  }[r.validity.status];
+  $('result-tiles').innerHTML = `
+    <div class="stat-tile"><span class="stat-label">Достоверность</span><span class="stat-value">${vTile}</span><span class="stat-sub">по L, F, K и F−K</span></div>
+    <div class="stat-tile"><span class="stat-label">Пик профиля</span><span class="stat-value mono">${peak.code} · T ${r.t[peak.code]}</span><span class="stat-sub">${esc(peak.name.toLowerCase())}</span></div>
+    <div class="stat-tile"><span class="stat-label">В коридоре 30–70</span><span class="stat-value mono">${inCorridor} / ${clinicalScales.length}</span><span class="stat-sub">базовых шкал</span></div>
+    <div class="stat-tile"><span class="stat-label">Ответов «не знаю»</span><span class="stat-value mono">${r.unknown}</span><span class="stat-sub">из ${r.answered}</span></div>`;
 
   /* --- достоверность --- */
   const badge = { ok: ['badge-ok', 'Профиль достоверен'], caution: ['badge-warn', 'Интерпретировать с осторожностью'], invalid: ['badge-danger', 'Профиль сомнителен'] }[r.validity.status];
@@ -44,13 +62,13 @@ function renderResult(r) {
 
   /* --- таблица --- */
   const tbody = document.querySelector('#scale-table tbody');
-  tbody.innerHTML = TEST.scales.map(s => {
+  tbody.innerHTML = TEST.scales.map((s, rowIdx) => {
     const band = tBand(r.t[s.code]);
     const corrected = r.corrected[s.code];
     const correctedCell = TEST.correction[s.code]
       ? (Math.round(corrected * 10) / 10).toFixed(1)
       : '—';
-    return `<tr>
+    return `<tr class="row-in" style="--row-d:${rowIdx * 45}ms">
       <td class="num"><b>${s.code}</b>${s.mmpi !== s.code ? ` <span class="muted">${s.mmpi}</span>` : ''}</td>
       <td>${s.name}<br><span class="small muted">${s.desc}</span></td>
       <td class="num">${r.raw[s.code]}</td>

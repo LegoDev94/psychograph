@@ -157,6 +157,25 @@ export function initChrome(active = '') {
     zone.setAttribute('aria-live', 'polite');
     document.body.appendChild(zone);
   }
+
+  initRise();
+}
+
+/* мягкое появление карточек при попадании во вьюпорт (все страницы) */
+export function initRise(root = document) {
+  if (!('IntersectionObserver' in window) || matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  const io = new IntersectionObserver(entries => {
+    for (const e of entries) {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    }
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px' });
+  root.querySelectorAll('.section .card:not([data-no-rise]), .section .faq-item, .scale-strip .scale-chip')
+    .forEach((node, i) => {
+      if (node.classList.contains('rise') || node.closest('[hidden]')) return;
+      node.classList.add('rise');
+      node.style.setProperty('--rise-d', `${(i % 6) * 70}ms`);
+      io.observe(node);
+    });
 }
 
 /* ---------- тосты ---------- */

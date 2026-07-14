@@ -18,13 +18,14 @@
 <main id="main">
   <section class="section" id="result-root" style="padding-top:clamp(32px,5vw,56px)">
     <div class="container">
-      <div class="print-only" style="margin-bottom:14px">
-        <strong>Психограф · ММИЛ</strong> — отчёт о результате тестирования
+      <div class="print-only print-head">
+        <span class="print-brand">Психограф · ММИЛ</span>
+        <span class="mono" id="print-protocol">протокол</span>
       </div>
 
       <div class="result-head">
         <div>
-          <div class="overline"><span class="num">Р-01</span> Результат тестирования <span class="stamp tag-demo">демо-банк</span></div>
+          <div class="overline"><span class="num">Р-01</span> Протокол исследования <span class="stamp tag-demo">демо-банк</span></div>
           <h1 style="margin-bottom:6px">Личностный профиль</h1>
           <p class="muted mb-0" id="result-meta">…</p>
         </div>
@@ -33,7 +34,13 @@
 
       <div id="validity-flags" style="display:flex;flex-direction:column;gap:10px;margin-top:18px"></div>
 
+      <div class="stat-tiles" id="result-tiles"></div>
+
       <figure class="chart-frame" style="margin:26px 0 0">
+        <div class="psy-topcap">
+          <span class="psy-rec"><span class="psy-rec-dot" aria-hidden="true"></span> запись профиля</span>
+          <span class="psy-archetype mono" id="protocol-label"></span>
+        </div>
         <div id="profile-chart" role="img" aria-label="Личностный профиль ММИЛ: T-баллы по 13 шкалам, коридор нормы 30–70. Точные значения — в таблице ниже."></div>
         <figcaption class="frame-cap">
           <span>Рис. 1 — личностный профиль ММИЛ</span>
