@@ -25,7 +25,12 @@
       <p class="lead">Результаты хранятся локально в вашем браузере — это часть демо-версии.
         В боевой версии здесь личный кабинет с синхронизацией между устройствами.</p>
 
-      <div id="history-list" style="display:flex;flex-direction:column;gap:14px;margin-top:26px"></div>
+      <div class="callout no-print" id="compare-bar" hidden style="margin-top:26px;display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between">
+        <span id="compare-hint">Отметьте два результата, чтобы увидеть динамику профиля.</span>
+        <a class="btn btn-primary btn-sm disabled" id="btn-compare" href="#" aria-disabled="true">Сравнить профили</a>
+      </div>
+
+      <div id="history-list" style="display:flex;flex-direction:column;gap:14px;margin-top:14px"></div>
 
       <div class="empty-state" id="history-empty" hidden>
         <div class="glyph">— · —</div>

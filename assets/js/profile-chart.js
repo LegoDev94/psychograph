@@ -92,6 +92,74 @@ export function buildProfileOption({ scales, t, colors, compact = false }) {
   };
 }
 
+/** Сравнение двух профилей: серия А (accent, круг) и Б (accent-2, ромб) + легенда. */
+export function buildCompareOption({ scales, a, b, colors }) {
+  const codes = scales.map(s => s.code);
+  const mkSeries = (item, color, symbol) => ({
+    name: item.label,
+    type: 'line',
+    data: scales.map(s => item.t[s.code]),
+    lineStyle: { width: 2, color },
+    itemStyle: { color, borderColor: colors.paper, borderWidth: 2 },
+    symbol, symbolSize: 9,
+    z: 5,
+    emphasis: { scale: 1.4 },
+  });
+
+  const seriesA = mkSeries(a, colors.accent, 'circle');
+  const seriesB = mkSeries(b, colors.accent2, 'diamond');
+  seriesA.markArea = {
+    silent: true,
+    itemStyle: { color: colors.corridor },
+    label: { show: true, position: 'insideTopRight', color: colors.ink3, fontFamily: colors.fontMono, fontSize: 10 },
+    data: [[{ yAxis: 30, name: 'коридор нормы 30–70' }, { yAxis: 70 }]],
+  };
+  seriesA.markLine = {
+    silent: true, symbol: 'none', label: { show: false },
+    lineStyle: { color: colors.corridorLine, type: 'dashed', width: 1 },
+    data: [{ yAxis: 50 }],
+  };
+
+  return {
+    animation: !matchMedia('(prefers-reduced-motion: reduce)').matches,
+    animationDuration: 900,
+    legend: {
+      top: 4,
+      textStyle: { color: colors.ink2, fontFamily: colors.fontBody, fontSize: 12 },
+      itemWidth: 18,
+    },
+    grid: { left: 44, right: 26, top: 44, bottom: 34 },
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: { type: 'line', lineStyle: { color: colors.hairlineStrong, type: 'dashed' } },
+      backgroundColor: colors.paper,
+      borderColor: colors.hairlineStrong,
+      textStyle: { color: colors.ink, fontFamily: colors.fontBody, fontSize: 13 },
+      extraCssText: 'box-shadow:0 8px 24px -8px rgba(0,0,0,.25);border-radius:6px;',
+      formatter(params) {
+        const scale = scales[params[0].dataIndex];
+        const rows = params.map(p =>
+          `<span style="color:${p.color}">●</span> ${p.seriesName}: <b>T=${p.value}</b>`).join('<br>');
+        const delta = params.length === 2 ? params[1].value - params[0].value : null;
+        return `<b>${scale.code}</b> · ${scale.name}<br>${rows}` +
+          (delta !== null ? `<br><span style="opacity:.65">Δ = ${delta > 0 ? '+' : ''}${delta}</span>` : '');
+      },
+    },
+    xAxis: {
+      type: 'category', data: codes, boundaryGap: false,
+      axisLine: { lineStyle: { color: colors.hairlineStrong } },
+      axisTick: { show: false },
+      axisLabel: { color: colors.ink2, fontFamily: colors.fontMono, fontSize: 12, margin: 12 },
+    },
+    yAxis: {
+      type: 'value', min: 20, max: 110, interval: 10,
+      axisLabel: { color: colors.ink3, fontFamily: colors.fontMono, fontSize: 11, showMinLabel: false },
+      splitLine: { lineStyle: { color: colors.hairline } },
+    },
+    series: [seriesA, seriesB],
+  };
+}
+
 /** Создание/пересоздание графика с реакцией на смену темы и ресайз. */
 export function mountProfileChart(el, getOption) {
   let chart = echarts.init(el, null, { renderer: 'canvas' });

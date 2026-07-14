@@ -37,12 +37,32 @@ function render() {
         ${r.interpretation ? '<span class="badge badge-accent" style="margin-left:6px">ИИ-разбор готов</span>' : ''}
       </div>
       <div class="actions">
+        ${list.length >= 2 ? `<label class="cmp-pick"><input type="checkbox" data-cmp="${r.id}" aria-label="Выбрать результат для сравнения"> сравнить</label>` : ''}
         <a class="btn btn-soft btn-sm" href="results.html?rid=${r.id}">Профиль</a>
         <a class="btn btn-ghost btn-sm" href="analysis.html?rid=${r.id}">${r.interpretation ? 'ИИ-разбор' : 'ИИ-анализ'}</a>
         <button class="btn btn-danger btn-sm" data-del="${r.id}">Удалить</button>
       </div>
     </div>`;
   }).join('');
+
+  /* сравнение: ровно два отмеченных результата */
+  const bar = $('compare-bar');
+  bar.hidden = list.length < 2;
+  const boxes = Array.from(document.querySelectorAll('[data-cmp]'));
+  const btnCompare = $('btn-compare');
+  const refreshCompare = () => {
+    const picked = boxes.filter(b => b.checked);
+    boxes.forEach(b => { b.disabled = !b.checked && picked.length >= 2; });
+    const ready = picked.length === 2;
+    btnCompare.classList.toggle('disabled', !ready);
+    btnCompare.setAttribute('aria-disabled', String(!ready));
+    btnCompare.href = ready ? `compare.html?a=${picked[0].dataset.cmp}&b=${picked[1].dataset.cmp}` : '#';
+    $('compare-hint').textContent = ready
+      ? 'Готово — открывайте сравнение.'
+      : `Отмечено ${picked.length} из 2 — выберите два результата, чтобы увидеть динамику.`;
+  };
+  boxes.forEach(b => b.addEventListener('change', refreshCompare));
+  if (list.length >= 2) refreshCompare();
 
   document.querySelectorAll('[data-del]').forEach(btn => {
     btn.addEventListener('click', () => confirmDialog(

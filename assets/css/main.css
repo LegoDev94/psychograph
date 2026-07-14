@@ -707,6 +707,17 @@ p { margin: 0 0 1em; }
 .empty-state { text-align: center; padding: 60px 20px; color: var(--ink-3); }
 .empty-state .glyph { font-family: var(--font-mono); font-size: 2rem; color: var(--hairline-strong); letter-spacing: 0.2em; }
 
+/* выбор результатов для сравнения */
+.cmp-pick {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-family: var(--font-mono); font-size: 0.76rem; color: var(--ink-2);
+  border: 1px solid var(--hairline-strong); border-radius: var(--radius);
+  padding: 7px 12px; cursor: pointer; user-select: none;
+}
+.cmp-pick input { accent-color: var(--accent); width: 15px; height: 15px; margin: 0; }
+.cmp-pick:has(input:checked) { border-color: var(--accent); background: var(--accent-soft); color: var(--accent-ink); }
+.cmp-pick:has(input:disabled) { opacity: 0.45; cursor: not-allowed; }
+
 /* ============ статьи / правовые ============ */
 .prose { max-width: 74ch; }
 .prose h2 { margin-top: 1.8em; }

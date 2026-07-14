@@ -132,6 +132,8 @@ export function initChrome(active = '') {
             <ul>
               <li><a href="catalog.html">Каталог тестов</a></li>
               <li><a href="about.html">О методике ММИЛ</a></li>
+              <li><a href="guide.html">Как читать профиль</a></li>
+              <li><a href="example.html">Пример ИИ-разбора</a></li>
               <li><a href="history.html">Мои результаты</a></li>
               <li><a href="index.html#pricing">Тарифы</a></li>
             </ul>

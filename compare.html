@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#FAF7F2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#15181C" media="(prefers-color-scheme: dark)">
+<title>Сравнение профилей — Психограф</title>
+<meta name="description" content="Сравнение двух результатов теста ММИЛ: динамика T-баллов по шкалам.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=STIX+Two+Text:ital,wght@0,400..700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/main.css">
+<script>(function(){try{var t=JSON.parse(localStorage.getItem('pg.theme')||'null');if(t!=='dark'&&t!=='light'){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.dataset.theme=t}catch(e){}})()</script>
+</head>
+<body>
+<header id="site-header"></header>
+
+<main id="main">
+  <section class="section" id="compare-root" style="padding-top:clamp(32px,5vw,56px)">
+    <div class="container">
+      <div class="overline"><span class="num">Р-02</span> Динамика профиля</div>
+      <h1 style="margin-bottom:6px">Сравнение результатов</h1>
+      <p class="muted mb-0" id="compare-meta">…</p>
+
+      <figure class="chart-frame" style="margin:26px 0 0">
+        <div id="compare-chart" role="img" aria-label="Сравнение двух профилей ММИЛ: две линии T-баллов по 13 шкалам. Точные значения и разницы — в таблице ниже." style="width:100%;height:440px"></div>
+        <figcaption class="frame-cap">
+          <span>Рис. 1 — два замера на одной шкале</span>
+          <span>T-баллы · коридор нормы 30–70</span>
+        </figcaption>
+      </figure>
+
+      <div class="result-actions no-print">
+        <button class="btn btn-ghost" id="btn-png">Скачать PNG</button>
+        <a class="btn btn-ghost" href="history.html">← К истории</a>
+      </div>
+
+      <hr class="hr-hair">
+      <h2 style="font-size:1.4rem">Изменения по шкалам</h2>
+      <div style="overflow-x:auto">
+        <table class="scale-table" id="compare-table">
+          <thead>
+            <tr><th scope="col">Код</th><th scope="col">Шкала</th><th scope="col" id="th-a">A</th><th scope="col" id="th-b">Б</th><th scope="col">Δ (Б − А)</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="small muted" style="margin-top:10px">Сдвиг до ±5 T-баллов обычно находится в пределах погрешности измерения.
+        Заметными считают устойчивые изменения от ±10 T. Профиль отражает и состояние в момент прохождения — не только устойчивые черты.</p>
+    </div>
+  </section>
+
+  <section class="section" id="no-compare" hidden>
+    <div class="container">
+      <div class="empty-state">
+        <div class="glyph">A · Б</div>
+        <h2>Нужны два результата</h2>
+        <p>Выберите два прохождения на странице истории — и увидите динамику профиля.</p>
+        <a class="btn btn-primary" href="history.html">К истории</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="site-footer"></footer>
+<script src="assets/vendor/echarts.min.js"></script>
+<script type="module" src="assets/js/compare.js"></script>
+</body>
+</html>
