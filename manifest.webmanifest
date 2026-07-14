@@ -1,0 +1,16 @@
+{
+  "name": "Психограф — онлайн-тест ММИЛ",
+  "short_name": "Психограф",
+  "description": "Личностный профиль ММИЛ в T-баллах и расширенная ИИ-интерпретация. Демо-версия.",
+  "lang": "ru",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#FAF7F2",
+  "theme_color": "#FAF7F2",
+  "icons": [
+    { "src": "assets/icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "assets/icons/icon-512.png", "sizes": "512x512", "type": "image/png" },
+    { "src": "assets/icons/icon-maskable-512.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}
