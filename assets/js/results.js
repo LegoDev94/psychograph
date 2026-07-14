@@ -22,7 +22,7 @@ if (!result) {
 function renderResult(r) {
   const formLabel = r.form === 'male' ? 'мужская форма' : 'женская форма';
   const protocol = '№ ' + r.id.slice(-6).toUpperCase();
-  $('result-meta').textContent = `${fmtDate(r.date)} · ${formLabel} · отвечено ${r.answered} из ${TEST.items.length}, «не знаю» — ${r.unknown}`;
+  $('result-meta').textContent = `${fmtDate(r.date)} · ${formLabel} · отвечено ${r.answered - r.unknown} из ${TEST.items.length}, пропущено — ${r.unknown}`;
   $('chart-cap-form').textContent = `${formLabel} · T-баллы · коридор нормы 30–70`;
   $('protocol-label').textContent = `протокол ${protocol}`;
   $('print-protocol').textContent = `протокол ${protocol} · ${fmtDate(r.date)}`;
@@ -40,7 +40,7 @@ function renderResult(r) {
     <div class="stat-tile"><span class="stat-label">Достоверность</span><span class="stat-value">${vTile}</span><span class="stat-sub">по L, F, K и F−K</span></div>
     <div class="stat-tile"><span class="stat-label">Пик профиля</span><span class="stat-value mono">${peak.code} · T ${r.t[peak.code]}</span><span class="stat-sub">${esc(peak.name.toLowerCase())}</span></div>
     <div class="stat-tile"><span class="stat-label">В коридоре 30–70</span><span class="stat-value mono">${inCorridor} / ${clinicalScales.length}</span><span class="stat-sub">базовых шкал</span></div>
-    <div class="stat-tile"><span class="stat-label">Ответов «не знаю»</span><span class="stat-value mono">${r.unknown}</span><span class="stat-sub">из ${r.answered}</span></div>`;
+    <div class="stat-tile"><span class="stat-label">Без ответа</span><span class="stat-value mono">${r.unknown}</span><span class="stat-sub">из ${TEST.items.length} утверждений</span></div>`;
 
   /* --- достоверность --- */
   const badge = { ok: ['badge-ok', 'Профиль достоверен'], caution: ['badge-warn', 'Интерпретировать с осторожностью'], invalid: ['badge-danger', 'Профиль сомнителен'] }[r.validity.status];

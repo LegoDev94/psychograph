@@ -25,7 +25,7 @@ console.log('1. Сырые баллы');
   check('unknown = 0', unknown === 0);
 
   const un = rawScores(TEST, 'male', answersAll(null));
-  check('все «Не знаю»: unknown = N, баллы = 0', un.unknown === TEST.items.length && TEST.scales.every(s => un.raw[s.code] === 0));
+  check('все пропущены (null): unknown = N, баллы = 0', un.unknown === TEST.items.length && TEST.scales.every(s => un.raw[s.code] === 0));
 }
 
 console.log('2. K-коррекция (Hs +0.5K, Pd +0.4K, Pt +1.0K, Sc +1.0K, Ma +0.2K)');
@@ -80,7 +80,7 @@ console.log('6. Достоверность');
   const ids = TEST.items.map(i => i.id);
   for (const id of ids.slice(0, Math.ceil(ids.length * 0.3))) manyUnknown[id] = null;
   const r = scoreAttempt(TEST, 'male', manyUnknown);
-  check('>25% «Не знаю» → профиль недостоверен', r.validity.status === 'invalid',
+  check('>25% пропусков → профиль недостоверен', r.validity.status === 'invalid',
     JSON.stringify(r.validity));
 
   const honest = answersAll(0);

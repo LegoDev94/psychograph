@@ -168,7 +168,7 @@ function init(r) {
 
       r.interpretation = { html, mode, createdAt: Date.now() };
       results.save(r);
-      renderReport(r);
+      renderReport(r, true); // свежесгенерированный отчёт «печатается» блок за блоком
       showStep('step-report');
       toast('Интерпретация готова и сохранена в истории');
     } catch (err) {
@@ -207,7 +207,7 @@ function generateDemo(r) {
   if (r.validity.status === 'invalid') {
     // при недостоверном профиле пошкальный разбор некорректен — не выводим его
     html += `<h3>Почему разбор по шкалам не приводится</h3>
-      <p>Оценочные показатели говорят о том, что профиль в этот раз получился недостоверным — например, из-за большого числа ответов «Не знаю», усталости или отвлечения. Интерпретировать значения шкал в такой ситуации было бы некорректно и нечестно по отношению к вам.</p>
+      <p>Оценочные показатели говорят о том, что профиль в этот раз получился недостоверным — например, из-за большого числа пропущенных утверждений, усталости или отвлечения. Интерпретировать значения шкал в такой ситуации было бы некорректно и нечестно по отношению к вам.</p>
       <p>Рекомендуем пройти тест повторно в спокойной обстановке, отвечая по первому впечатлению. Повторная генерация разбора для нового результата в демо-версии бесплатна.</p>`;
   } else {
     html += `<h3>Шкалы профиля</h3>`;
@@ -295,11 +295,25 @@ function mdToHtml(md) {
 }
 
 /* ---------- отчёт ---------- */
-function renderReport(r) {
-  $('report-body').innerHTML = r.interpretation.html;
+function renderReport(r, animate = false) {
+  const body = $('report-body');
+  body.innerHTML = r.interpretation.html;
   $('btn-report-back').href = 'results.html?rid=' + r.id;
   $('btn-report-pdf').addEventListener('click', () => {
     toast('В диалоге печати выберите «Сохранить как PDF»');
     setTimeout(() => window.print(), 600);
   });
+
+  /* эффект «печати»: блоки отчёта проявляются друг за другом */
+  if (animate && !matchMedia('(prefers-reduced-motion: reduce)').matches && body.animate) {
+    Array.from(body.children).forEach((block, i) => {
+      const delay = Math.min(i * 110, 1900);
+      block.style.opacity = '0';
+      const anim = block.animate(
+        [{ opacity: 0, transform: 'translateY(10px)' }, { opacity: 1, transform: 'none' }],
+        { duration: 380, delay, easing: 'cubic-bezier(0.2, 0.7, 0.2, 1)', fill: 'backwards' }
+      );
+      anim.onfinish = () => { block.style.opacity = ''; };
+    });
+  }
 }

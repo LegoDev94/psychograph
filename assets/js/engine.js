@@ -1,7 +1,9 @@
 /* ПСИХОГРАФ — движок расчёта профиля (M3 по ТЗ)
    Чистые функции без DOM: работают и в браузере, и в node-тестах.
 
-   Ответы: { [itemId]: 1 | 0 | null }  — 1 «Верно», 0 «Неверно», null «Не знаю».
+   Ответы: { [itemId]: 1 | 0 | null }  — 1 «Верно», 0 «Неверно»,
+   null — неопределённый ответ (пропущенное утверждение): балл не начисляется,
+   учитывается в оценке достоверности.
    Формулы по ТЗ:
      • K-коррекция: Hs +0.5·K, Pd +0.4·K, Pt +1.0·K, Sc +1.0·K, Ma +0.2·K
      • T = 50 + 10·(X − M) / σ  (нормы по полу)
@@ -12,7 +14,7 @@ export function effectiveKey(key, form) {
   return (form === 'female' && key.keyedFemale) ? key.keyedFemale : key.keyed;
 }
 
-/** Сырые баллы по всем шкалам + счётчик «Не знаю». */
+/** Сырые баллы по всем шкалам + счётчик неопределённых ответов (пропусков). */
 export function rawScores(test, form, answers) {
   const raw = {};
   for (const s of test.scales) raw[s.code] = 0;
@@ -69,7 +71,7 @@ export const BAND_LABELS = {
   high: 'Выраженное повышение',
 };
 
-/** Оценка достоверности профиля по L / F / K и числу «Не знаю» (правила — в описании теста). */
+/** Оценка достоверности профиля по L / F / K и числу пропусков (правила — в описании теста). */
 export function assessValidity(test, { raw, unknown, answered, t }) {
   const rules = test.validityRules;
   const flags = [];
@@ -80,11 +82,11 @@ export function assessValidity(test, { raw, unknown, answered, t }) {
   if (unknownShare > rules.maxUnknownShare) {
     worse('invalid');
     flags.push({ code: 'unknown', level: 'invalid',
-      text: `Слишком много ответов «Не знаю» (${unknown} из ${answered}). Профиль может быть занижен и недостоверен.` });
+      text: `Слишком много утверждений оставлено без ответа (${unknown} из ${answered}). Профиль может быть занижен и недостоверен.` });
   } else if (unknownShare > rules.maxUnknownShare / 2) {
     worse('caution');
     flags.push({ code: 'unknown', level: 'caution',
-      text: `Заметная доля ответов «Не знаю» (${unknown}). Отдельные шкалы могут быть занижены.` });
+      text: `Заметная доля утверждений без ответа (${unknown}). Отдельные шкалы могут быть занижены.` });
   }
 
   if (t.F > rules.fInvalidT) {

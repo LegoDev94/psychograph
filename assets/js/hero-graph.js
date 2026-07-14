@@ -23,15 +23,15 @@ const ARCHETYPES = [
 const QUIZ = [
   {
     text: 'Перед важным делом я перепроверяю всё по несколько раз.',
-    v: { 7: 9, 2: 3, K: -2 }, f: { 7: -6, 9: 3 }, u: { 7: 2 },
+    v: { 7: 9, 2: 3, K: -2 }, f: { 7: -6, 9: 3 },
   },
   {
     text: 'Мне легко начать разговор с незнакомым человеком.',
-    v: { 0: -8, 9: 5, 3: 2 }, f: { 0: 8, 2: 3 }, u: { 0: 2 },
+    v: { 0: -8, 9: 5, 3: 2 }, f: { 0: 8, 2: 3 },
   },
   {
     text: 'Обычно я просыпаюсь полным сил и планов.',
-    v: { 9: 7, 2: -5 }, f: { 2: 7, 1: 3, 9: -4 }, u: { 2: 2 },
+    v: { 9: 7, 2: -5 }, f: { 2: 7, 1: 3, 9: -4 },
   },
 ];
 
@@ -378,7 +378,6 @@ export function initHeroGraph(ids = {}) {
         <div class="psy-quiz-answers" role="group" aria-label="Ответ на утверждение">
           <button class="answer-btn" type="button" data-a="v">Верно</button>
           <button class="answer-btn" type="button" data-a="f">Неверно</button>
-          <button class="answer-btn" type="button" data-a="u">Не знаю</button>
         </div>`;
       bindQuiz();
       quizBody.querySelector('[data-a]')?.focus({ preventScroll: true });

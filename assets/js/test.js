@@ -154,7 +154,6 @@ document.addEventListener('keydown', e => {
   if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
   if (e.key === '1') setAnswer(1);
   else if (e.key === '2') setAnswer(0);
-  else if (e.key === '3') setAnswer(null);
   else if (e.key === 'ArrowRight') next();
   else if (e.key === 'ArrowLeft') prev();
 });
@@ -169,7 +168,7 @@ function finish() {
   show('finish');
   if (missing.length) {
     $('finish-title').textContent = 'Остались пропущенные утверждения';
-    $('finish-info').textContent = `Без ответа: ${missing.length}. Можно вернуться и ответить — или рассчитать профиль как есть (пропуски трактуются как «Не знаю» и снижают достоверность).`;
+    $('finish-info').textContent = `Без ответа: ${missing.length}. Можно вернуться и ответить — или рассчитать профиль как есть (пропуски не начисляют баллов и снижают достоверность).`;
     $('btn-unanswered').hidden = false;
   } else {
     $('finish-title').textContent = 'Все утверждения пройдены';
@@ -192,7 +191,7 @@ $('btn-compute').addEventListener('click', () => {
   computing = true;
   $('btn-compute').innerHTML = '<span class="spinner"></span> Расчёт…';
 
-  // пропуски считаем «Не знаю»
+  // пропущенные утверждения не начисляют баллов и учитываются как неопределённые
   const answers = { ...session.answers };
   for (const it of TEST.items) if (answers[it.id] === undefined) answers[it.id] = null;
 

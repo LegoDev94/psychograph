@@ -3,6 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#FAF7F2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#15181C" media="(prefers-color-scheme: dark)">
 <title>Прохождение теста ММИЛ — Психограф</title>
 <meta name="description" content="Онлайн-прохождение теста ММИЛ: мужская и женская формы, автосохранение ответов, индикатор прогресса.">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
@@ -22,8 +24,8 @@
       <div class="overline"><span class="num">Т-01</span> Методика ММИЛ <span class="stamp tag-demo">демо-банк</span></div>
       <h1>Многостороннее исследование личности</h1>
       <p class="lead">Вам будут показаны утверждения о самочувствии, привычках и отношениях с людьми.
-        Читайте каждое и отвечайте, верно ли оно по отношению к вам. Здесь нет «правильных» ответов —
-        отвечайте так, как есть на самом деле, не задумываясь подолгу.</p>
+        Читайте каждое и отвечайте «Верно» или «Неверно» — как есть на самом деле,
+        не задумываясь подолгу: здесь нет «правильных» ответов.</p>
 
       <div class="callout" style="margin:18px 0 26px">
         <p class="mb-0"><strong>Демонстрационная версия:</strong> используется сокращённый банк из
@@ -81,7 +83,6 @@
           <div class="answer-row" role="group" aria-label="Варианты ответа">
             <button class="answer-btn" type="button" data-answer="1" aria-pressed="false">Верно <kbd>1</kbd></button>
             <button class="answer-btn" type="button" data-answer="0" aria-pressed="false">Неверно <kbd>2</kbd></button>
-            <button class="answer-btn" type="button" data-answer="null" aria-pressed="false">Не знаю <kbd>3</kbd></button>
           </div>
         </div>
         <div class="quiz-nav">
@@ -89,7 +90,7 @@
           <button class="btn btn-ghost" id="btn-pause" title="Ответы уже сохранены — можно просто закрыть вкладку">Прерваться</button>
           <button class="btn btn-soft" id="btn-next">Далее →</button>
         </div>
-        <p class="quiz-hint">Клавиши <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> — ответ, <kbd>←</kbd> <kbd>→</kbd> — навигация.
+        <p class="quiz-hint">Клавиши <kbd>1</kbd> <kbd>2</kbd> — ответ, <kbd>←</kbd> <kbd>→</kbd> — навигация.
           Ответ можно изменить, вернувшись назад.</p>
       </div>
     </section>

@@ -46,9 +46,17 @@ export function currentTheme() {
 }
 function toggleTheme() {
   const next = currentTheme() === 'dark' ? 'light' : 'dark';
-  document.documentElement.dataset.theme = next;
-  store.set('theme', next);
-  document.dispatchEvent(new CustomEvent('pg:theme', { detail: next }));
+  const apply = () => {
+    document.documentElement.dataset.theme = next;
+    store.set('theme', next);
+    document.dispatchEvent(new CustomEvent('pg:theme', { detail: next }));
+  };
+  // плавный кросс-фейд всей страницы, где поддерживается
+  if (document.startViewTransition && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+    document.startViewTransition(apply);
+  } else {
+    apply();
+  }
 }
 
 /* ---------- шапка и футер ---------- */
