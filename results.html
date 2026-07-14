@@ -1,0 +1,95 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Результат теста ММИЛ — личностный профиль — Психограф</title>
+<meta name="description" content="Личностный профиль ММИЛ в T-баллах: график по 13 шкалам, оценка достоверности, экспорт в PNG и PDF.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=STIX+Two+Text:ital,wght@0,400..700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/main.css">
+<script>(function(){try{var t=JSON.parse(localStorage.getItem('pg.theme')||'null');if(t!=='dark'&&t!=='light'){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.dataset.theme=t}catch(e){}})()</script>
+</head>
+<body>
+<header id="site-header"></header>
+
+<main>
+  <section class="section" id="result-root" style="padding-top:clamp(32px,5vw,56px)">
+    <div class="container">
+      <div class="print-only" style="margin-bottom:14px">
+        <strong>Психограф · ММИЛ</strong> — отчёт о результате тестирования
+      </div>
+
+      <div class="result-head">
+        <div>
+          <div class="overline"><span class="num">Р-01</span> Результат тестирования <span class="stamp tag-demo">демо-банк</span></div>
+          <h1 style="margin-bottom:6px">Личностный профиль</h1>
+          <p class="muted mb-0" id="result-meta">…</p>
+        </div>
+        <div id="validity-badge"></div>
+      </div>
+
+      <div id="validity-flags" style="display:flex;flex-direction:column;gap:10px;margin-top:18px"></div>
+
+      <figure class="chart-frame" style="margin:26px 0 0">
+        <div id="profile-chart" role="img" aria-label="Личностный профиль ММИЛ: T-баллы по 13 шкалам, коридор нормы 30–70. Точные значения — в таблице ниже."></div>
+        <figcaption class="frame-cap">
+          <span>Рис. 1 — личностный профиль ММИЛ</span>
+          <span id="chart-cap-form">T-баллы · коридор нормы 30–70</span>
+        </figcaption>
+      </figure>
+
+      <div class="result-actions no-print">
+        <button class="btn btn-ghost" id="btn-png">Скачать PNG</button>
+        <button class="btn btn-ghost" id="btn-pdf">Сохранить в PDF</button>
+        <a class="btn btn-ghost" href="test.html">Пройти ещё раз</a>
+        <a class="btn btn-primary" id="btn-analysis" href="#">Получить ИИ-интерпретацию →</a>
+      </div>
+
+      <hr class="hr-hair">
+
+      <h2 style="font-size:1.4rem">Значения по шкалам</h2>
+      <div style="overflow-x:auto">
+        <table class="scale-table" id="scale-table">
+          <thead>
+            <tr><th>Код</th><th>Шкала</th><th>Сырой балл</th><th>С коррекцией</th><th>T-балл</th><th>Диапазон</th></tr>
+          </thead>
+          <tbody></tbody>
+        </table>
+      </div>
+      <p class="small muted" style="margin-top:10px">K-коррекция по ТЗ: Hs +0.5·K, Pd +0.4·K, Pt +1.0·K, Sc +1.0·K, Ma +0.2·K.
+        Перевод в T-баллы: T = 50 + 10·(X − M)/σ, нормы — по полу (в демо-версии нормы условные).</p>
+
+      <div class="card" style="margin-top:26px" id="free-summary">
+        <h3>Краткое резюме <span class="badge">бесплатно</span></h3>
+        <div id="summary-text"></div>
+        <div class="callout no-print" style="margin-top:14px">
+          <p class="mb-0"><strong>Хотите глубже?</strong> Расширенная ИИ-интерпретация разбирает каждую шкалу вашего
+          профиля, сочетания повышений и контекст из уточняющего опросника — <a id="link-analysis" href="#">перейти к анализу</a>.</p>
+        </div>
+      </div>
+
+      <p class="small muted" style="margin-top:26px" id="result-disclaimer">Результат психологического тестирования не является медицинским
+        диагнозом и не заменяет консультацию специалиста. Демо-версия использует сокращённый банк утверждений и условные нормы.</p>
+    </div>
+  </section>
+
+  <section class="section" id="no-result" hidden>
+    <div class="container">
+      <div class="empty-state">
+        <div class="glyph">L·F·K</div>
+        <h2>Результат не найден</h2>
+        <p>Похоже, вы ещё не проходили тест на этом устройстве — или ссылка устарела.</p>
+        <a class="btn btn-primary" href="test.html">Пройти тест</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="site-footer"></footer>
+<script src="assets/vendor/echarts.min.js"></script>
+<script type="module" src="assets/js/results.js"></script>
+</body>
+</html>

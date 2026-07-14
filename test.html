@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Прохождение теста ММИЛ — Психограф</title>
+<meta name="description" content="Онлайн-прохождение теста ММИЛ: мужская и женская формы, автосохранение ответов, индикатор прогресса.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=STIX+Two+Text:ital,wght@0,400..700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/main.css">
+<script>(function(){try{var t=JSON.parse(localStorage.getItem('pg.theme')||'null');if(t!=='dark'&&t!=='light'){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.dataset.theme=t}catch(e){}})()</script>
+</head>
+<body>
+<header id="site-header"></header>
+
+<main>
+  <!-- ЭКРАН 1: ИНСТРУКЦИЯ И СОГЛАСИЕ -->
+  <section class="section" id="screen-intro">
+    <div class="container quiz-shell">
+      <div class="overline"><span class="num">Т-01</span> Методика ММИЛ <span class="stamp tag-demo">демо-банк</span></div>
+      <h1>Многостороннее исследование личности</h1>
+      <p class="lead">Вам будут показаны утверждения о самочувствии, привычках и отношениях с людьми.
+        Читайте каждое и отвечайте, верно ли оно по отношению к вам. Здесь нет «правильных» ответов —
+        отвечайте так, как есть на самом деле, не задумываясь подолгу.</p>
+
+      <div class="callout" style="margin:18px 0 26px">
+        <p class="mb-0"><strong>Демонстрационная версия:</strong> используется сокращённый банк из
+        <span id="intro-count">…</span> утверждений, написанный специально для демо. Полная методика содержит
+        377 утверждений и подключается владельцем лицензии — движок расчёта у них общий.</p>
+      </div>
+
+      <div class="card card-paper consent-box">
+        <h3 class="mb-0">Перед началом</h3>
+        <div>
+          <p class="small muted" style="margin-bottom:10px">Форма опросника — от неё зависят ключи и нормы расчёта:</p>
+          <div class="form-pick" role="radiogroup" aria-label="Выбор формы опросника">
+            <button class="pick" type="button" data-form="male" aria-pressed="false"><b>Мужская форма</b><span>ключи и T-нормы для мужчин</span></button>
+            <button class="pick" type="button" data-form="female" aria-pressed="false"><b>Женская форма</b><span>ключи и T-нормы для женщин</span></button>
+          </div>
+        </div>
+        <label class="check"><input type="checkbox" id="consent-age">
+          <span>Мне исполнилось 18 лет.</span></label>
+        <label class="check"><input type="checkbox" id="consent-pd">
+          <span>Даю согласие на обработку персональных данных, включая сведения о результатах
+          психологического тестирования, на условиях <a href="privacy.html" target="_blank" rel="noopener">политики обработки ПДн</a>
+          и принимаю <a href="terms.html" target="_blank" rel="noopener">пользовательское соглашение</a>.</span></label>
+        <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+          <button class="btn btn-primary btn-lg" id="btn-start" disabled>Начать тест</button>
+          <span class="small muted">≈ 10–15 минут для демо-банка · ответы сохраняются автоматически</span>
+        </div>
+      </div>
+
+      <div class="callout ok" id="resume-box" hidden style="margin-top:18px">
+        <p style="margin-bottom:10px"><strong>Найдена незавершённая попытка</strong> — <span id="resume-info"></span>.</p>
+        <div style="display:flex;gap:10px;flex-wrap:wrap">
+          <button class="btn btn-primary btn-sm" id="btn-resume">Продолжить</button>
+          <button class="btn btn-ghost btn-sm" id="btn-discard">Начать заново</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ЭКРАН 2: ВОПРОСЫ -->
+  <div id="screen-quiz" hidden>
+    <div class="progress-rail">
+      <div class="container">
+        <span class="progress-label" id="progress-label">1 / 102</span>
+        <div class="progress-track" role="progressbar" aria-label="Прогресс прохождения" aria-valuemin="0" aria-valuemax="100" aria-valuenow="0" id="progress-bar">
+          <div class="progress-fill" id="progress-fill" style="width:0%"></div>
+        </div>
+        <span class="progress-label" id="progress-pct">0%</span>
+      </div>
+    </div>
+    <section class="section" style="padding-top:8px">
+      <div class="container quiz-shell">
+        <div class="q-card">
+          <div class="q-num"><span id="q-num">Утверждение 1</span><span id="q-form"></span></div>
+          <p class="q-text" id="q-text" aria-live="polite">…</p>
+          <div class="answer-row" role="group" aria-label="Варианты ответа">
+            <button class="answer-btn" type="button" data-answer="1">Верно <kbd>1</kbd></button>
+            <button class="answer-btn" type="button" data-answer="0">Неверно <kbd>2</kbd></button>
+            <button class="answer-btn" type="button" data-answer="null">Не знаю <kbd>3</kbd></button>
+          </div>
+        </div>
+        <div class="quiz-nav">
+          <button class="btn btn-ghost" id="btn-prev">← Назад</button>
+          <button class="btn btn-ghost" id="btn-pause" title="Ответы уже сохранены — можно просто закрыть вкладку">Прерваться</button>
+          <button class="btn btn-soft" id="btn-next">Далее →</button>
+        </div>
+        <p class="quiz-hint">Клавиши <kbd>1</kbd> <kbd>2</kbd> <kbd>3</kbd> — ответ, <kbd>←</kbd> <kbd>→</kbd> — навигация.
+          Ответ можно изменить, вернувшись назад.</p>
+      </div>
+    </section>
+  </div>
+
+  <!-- ЭКРАН 3: ЗАВЕРШЕНИЕ -->
+  <section class="section" id="screen-finish" hidden>
+    <div class="container quiz-shell">
+      <div class="card card-paper" style="text-align:center;padding:clamp(30px,5vw,54px)">
+        <div class="overline" style="justify-content:center"><span class="num">Т-02</span> Завершение</div>
+        <h2 id="finish-title">Все утверждения пройдены</h2>
+        <p class="muted" id="finish-info" style="max-width:48ch;margin-inline:auto"></p>
+        <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px">
+          <button class="btn btn-ghost" id="btn-unanswered" hidden>К пропущенным</button>
+          <button class="btn btn-primary btn-lg" id="btn-compute">Рассчитать профиль</button>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="site-footer"></footer>
+<script type="module" src="assets/js/test.js"></script>
+</body>
+</html>

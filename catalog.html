@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Каталог тестов — Психограф</title>
+<meta name="description" content="Каталог психологических тестов: ММИЛ (адаптация MMPI) и будущие методики платформы.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=STIX+Two+Text:ital,wght@0,400..700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/main.css">
+<script>(function(){try{var t=JSON.parse(localStorage.getItem('pg.theme')||'null');if(t!=='dark'&&t!=='light'){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.dataset.theme=t}catch(e){}})()</script>
+</head>
+<body>
+<header id="site-header"></header>
+
+<main>
+  <section class="section" style="padding-top:clamp(32px,5vw,56px)">
+    <div class="container">
+      <div class="overline"><span class="num">02</span> Витрина методик</div>
+      <h1>Каталог тестов</h1>
+      <p class="lead">Платформа построена вокруг конструктора: любая методика с ключами и нормами
+        описывается данными и подключается без программиста. Сейчас в каталоге — ядро сервиса.</p>
+
+      <div class="grid-2" style="margin-top:30px;align-items:stretch">
+        <div class="card card-paper test-card" style="grid-column:1/-1">
+          <div class="test-head">
+            <div>
+              <h2 style="margin-bottom:4px">ММИЛ <span class="muted" style="font-size:1rem">· методика многостороннего исследования личности</span></h2>
+              <p class="muted mb-0">Адаптация MMPI Ф. Б. Березина и М. П. Мирошникова. Три оценочные шкалы (L, F, K)
+              и десять базовых; отдельные мужская и женская формы с разными ключами и нормами; K-коррекция и T-нормирование.</p>
+            </div>
+            <span class="badge badge-ok">доступен</span>
+          </div>
+          <div class="meta-row">
+            <span>377 утверждений (полная форма)</span>
+            <span>102 — демо-банк</span>
+            <span>13 шкал</span>
+            <span>30–60 мин</span>
+            <span>ответы: верно / неверно / не знаю</span>
+          </div>
+          <div class="callout">
+            <p class="mb-0"><strong>Инструкция.</strong> Отвечайте искренне и не задумывайтесь подолгу: первая
+            реакция обычно точнее. Тест можно прервать в любой момент — ответы сохраняются автоматически.
+            Бесплатно: график-профиль в T-баллах и оценка достоверности. Платно: развёрнутая ИИ-интерпретация.</p>
+          </div>
+          <div class="actions">
+            <a class="btn btn-primary" href="test.html">Пройти тест</a>
+            <a class="btn btn-ghost" href="about.html">О методике</a>
+          </div>
+        </div>
+
+        <div class="card test-card soon">
+          <div class="test-head">
+            <h3 class="mb-0">СМОЛ (Мини-мульт)</h3>
+            <span class="badge">скоро</span>
+          </div>
+          <p class="muted small mb-0">Сокращённый вариант многофакторного опросника: 71 утверждение, 11 шкал.
+            Быстрый скрининговый профиль за 10–15 минут.</p>
+          <div class="meta-row"><span>71 утверждение</span><span>≈ 15 мин</span></div>
+        </div>
+
+        <div class="card test-card soon">
+          <div class="test-head">
+            <h3 class="mb-0">Шкала тревоги Спилбергера — Ханина</h3>
+            <span class="badge">скоро</span>
+          </div>
+          <p class="muted small mb-0">Ситуативная и личностная тревожность: 40 утверждений, две шкалы,
+            нормативные уровни. Классика экспресс-диагностики состояния.</p>
+          <div class="meta-row"><span>40 утверждений</span><span>≈ 10 мин</span></div>
+        </div>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="site-footer"></footer>
+<script type="module">
+  import { initChrome } from './assets/js/common.js';
+  initChrome('catalog');
+</script>
+</body>
+</html>

@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ИИ-интерпретация профиля ММИЛ — Психограф</title>
+<meta name="description" content="Расширенная ИИ-интерпретация личностного профиля ММИЛ: уточняющий опросник, обезличенная передача данных, развёрнутый текстовый разбор.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=STIX+Two+Text:ital,wght@0,400..700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/main.css">
+<script>(function(){try{var t=JSON.parse(localStorage.getItem('pg.theme')||'null');if(t!=='dark'&&t!=='light'){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.dataset.theme=t}catch(e){}})()</script>
+</head>
+<body>
+<header id="site-header"></header>
+
+<main>
+  <section class="section" id="analysis-root" style="padding-top:clamp(32px,5vw,56px)">
+    <div class="container" style="max-width:860px">
+      <div class="overline"><span class="num">И-01</span> Расширенная интерпретация <span class="stamp tag-demo">демо-режим</span></div>
+      <h1>ИИ-разбор вашего профиля</h1>
+      <p class="lead" id="analysis-meta">…</p>
+
+      <!-- ШАГ 1: ОПРОСНИК -->
+      <div id="step-q15">
+        <div class="callout" style="margin:18px 0 26px">
+          <p class="mb-0"><strong>Как это устроено.</strong> Короткий опросник уточняет ваш контекст — он передаётся
+          в ИИ вместе с T-баллами профиля <strong>обезличенно</strong>: без имени, почты и любых идентификаторов.
+          Ответы можно пропускать, но чем полнее контекст, тем точнее разбор.</p>
+        </div>
+        <div class="card card-paper">
+          <h3>Уточняющий опросник <span class="muted small">15 вопросов</span></h3>
+          <form class="q15" id="q15-form"></form>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:24px">
+            <button class="btn btn-primary btn-lg" id="btn-to-pay">Продолжить → оплата</button>
+            <span class="small muted">Шаг 1 из 3</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ШАГ 2: ОПЛАТА -->
+      <div id="step-pay" hidden>
+        <div class="card card-paper" style="max-width:560px">
+          <h3>Оплата интерпретации</h3>
+          <div style="display:flex;align-items:baseline;gap:12px;margin:6px 0 14px">
+            <span class="price" style="font-family:var(--font-display);font-size:2rem;font-weight:700">499 ₽</span>
+            <span class="muted small">разовая услуга · без подписки</span>
+          </div>
+          <ul style="margin:0 0 18px;padding-left:1.1em" class="small">
+            <li>развёрнутый разбор каждой шкалы профиля</li>
+            <li>паттерны сочетаний повышенных шкал</li>
+            <li>учёт контекста из опросника</li>
+            <li>PDF-отчёт в вашей истории</li>
+          </ul>
+          <div class="callout warn" style="margin-bottom:18px">
+            <p class="mb-0"><strong>Демо-режим.</strong> В боевой версии здесь — защищённая страница интернет-эквайринга
+            Альфа-Банка и электронный чек по 54-ФЗ. В демо оплата имитируется, средства не списываются.</p>
+          </div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+            <button class="btn btn-primary btn-lg" id="btn-pay">Оплатить (демо)</button>
+            <button class="btn btn-ghost" id="btn-back-q15">← К опроснику</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- ШАГ 3: ГЕНЕРАЦИЯ -->
+      <div id="step-generate" hidden>
+        <div class="card card-paper">
+          <h3>Генерация интерпретации</h3>
+          <p class="muted small">Оплата подтверждена. Выберите способ генерации:</p>
+          <div class="form-pick" style="margin-bottom:18px">
+            <button class="pick selected" type="button" id="mode-demo" aria-pressed="true">
+              <b>Демо-движок (локально)</b>
+              <span>интерпретационная библиотека сайта, без внешних запросов</span>
+            </button>
+            <button class="pick" type="button" id="mode-deepseek" aria-pressed="false">
+              <b>DeepSeek API (свой ключ)</b>
+              <span>живой вызов deepseek-chat из браузера, ключ хранится только у вас</span>
+            </button>
+          </div>
+          <div class="field" id="deepseek-key-row" hidden style="margin-bottom:18px">
+            <label class="small muted" for="deepseek-key" style="display:block;margin-bottom:6px">API-ключ DeepSeek (остаётся в вашем браузере; в боевой версии вызов идёт с сервера через очередь)</label>
+            <input type="password" id="deepseek-key" placeholder="sk-…" autocomplete="off">
+          </div>
+          <button class="btn btn-primary btn-lg" id="btn-generate">Сгенерировать разбор</button>
+          <div class="gen-status card" id="gen-status" hidden style="margin-top:18px">
+            <span class="dot"></span><span id="gen-status-text">Задача поставлена в очередь…</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- ОТЧЁТ -->
+      <div id="step-report" hidden>
+        <article class="ai-report" id="report-body"></article>
+        <div class="result-actions no-print" style="justify-content:center">
+          <button class="btn btn-ghost" id="btn-report-pdf">Сохранить в PDF</button>
+          <a class="btn btn-ghost" id="btn-report-back" href="#">← К профилю</a>
+          <a class="btn btn-soft" href="history.html">В мою историю</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section" id="no-result" hidden>
+    <div class="container">
+      <div class="empty-state">
+        <div class="glyph">?</div>
+        <h2>Сначала нужен профиль</h2>
+        <p>ИИ-интерпретация строится на результате теста. Пройдите тест — это бесплатно.</p>
+        <a class="btn btn-primary" href="test.html">Пройти тест</a>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer id="site-footer"></footer>
+
+<dialog class="modal" id="pay-modal">
+  <h3 style="margin-bottom:6px">Имитация эквайринга</h3>
+  <p class="small muted">Демонстрация сценария: заказ → страница банка → callback об успешной оплате → доступ к анализу.</p>
+  <div class="card" style="padding:14px 16px;margin:10px 0 4px">
+    <div style="display:flex;justify-content:space-between;font-size:.92rem"><span>Расширенная ИИ-интерпретация</span><b class="mono">499 ₽</b></div>
+    <div style="display:flex;justify-content:space-between;font-size:.8rem;color:var(--ink-3);margin-top:4px"><span>Чек 54-ФЗ (демо)</span><span class="mono">№ 0000-DEMO</span></div>
+  </div>
+  <div class="modal-actions">
+    <button class="btn btn-ghost" id="pay-cancel">Отмена</button>
+    <button class="btn btn-primary" id="pay-confirm">Имитировать успешную оплату</button>
+  </div>
+</dialog>
+
+<script type="module" src="assets/js/analysis.js"></script>
+</body>
+</html>

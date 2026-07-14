@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Мои результаты — Психограф</title>
+<meta name="description" content="История прохождений теста ММИЛ: профили, интерпретации, экспорт.">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:ital,wght@0,400;0,500;0,600;1,400&family=STIX+Two+Text:ital,wght@0,400..700;1,400&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/main.css">
+<script>(function(){try{var t=JSON.parse(localStorage.getItem('pg.theme')||'null');if(t!=='dark'&&t!=='light'){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.dataset.theme=t}catch(e){}})()</script>
+</head>
+<body>
+<header id="site-header"></header>
+
+<main>
+  <section class="section" style="padding-top:clamp(32px,5vw,56px)">
+    <div class="container" style="max-width:860px">
+      <div class="overline"><span class="num">К-01</span> Личный архив</div>
+      <h1>Мои результаты</h1>
+      <p class="lead">Результаты хранятся локально в вашем браузере — это часть демо-версии.
+        В боевой версии здесь личный кабинет с синхронизацией между устройствами.</p>
+
+      <div id="history-list" style="display:flex;flex-direction:column;gap:14px;margin-top:26px"></div>
+
+      <div class="empty-state" id="history-empty" hidden>
+        <div class="glyph">— · —</div>
+        <h2>Пока пусто</h2>
+        <p>Пройдите тест — профиль появится здесь и будет доступен в любой момент.</p>
+        <a class="btn btn-primary" href="test.html">Пройти тест</a>
+      </div>
+
+      <div class="result-actions" id="history-actions" hidden>
+        <button class="btn btn-ghost btn-sm" id="btn-export">Экспорт всех данных (JSON)</button>
+        <button class="btn btn-danger btn-sm" id="btn-clear">Удалить все данные</button>
+      </div>
+      <p class="small muted" style="margin-top:14px">Право на удаление (152-ФЗ): кнопка выше стирает все результаты,
+        интерпретации и ответы с этого устройства безвозвратно.</p>
+    </div>
+  </section>
+</main>
+
+<footer id="site-footer"></footer>
+
+<dialog class="modal" id="confirm-modal">
+  <h3 id="confirm-title">Удалить?</h3>
+  <p class="small muted" id="confirm-text"></p>
+  <div class="modal-actions">
+    <button class="btn btn-ghost" id="confirm-cancel">Отмена</button>
+    <button class="btn btn-danger" id="confirm-ok">Удалить</button>
+  </div>
+</dialog>
+
+<script type="module" src="assets/js/history.js"></script>
+</body>
+</html>
