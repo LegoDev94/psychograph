@@ -85,58 +85,74 @@
     <div class="container">
       <div class="overline"><span class="num">02</span> Порядок исследования</div>
       <h2>Три шага — от ответов к пониманию</h2>
-      <div class="grid-3" style="margin-top:30px">
-        <div class="card step-card">
-          <span class="step-num">Шаг 1 / бесплатно</span>
+      <div class="process">
+        <div class="process-step">
+          <div class="ps-marker" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="m9 14 2 2 4-4"/></svg>
+          </div>
+          <span class="ps-tag">Шаг 1 · <b>бесплатно</b></span>
           <h3>Прохождение теста</h3>
-          <p class="muted mb-0">Выбираете мужскую или женскую форму, отвечаете «Верно» или «Неверно».
+          <p>Выбираете мужскую или женскую форму, отвечаете «Верно» или «Неверно».
             Ответы сохраняются автоматически — тест можно прервать и продолжить позже.</p>
         </div>
-        <div class="card step-card">
-          <span class="step-num">Шаг 2 / бесплатно</span>
+        <div class="process-step">
+          <div class="ps-marker" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 3v18h18"/><polyline points="6 15 10 9 13 12 18 5"/></svg>
+          </div>
+          <span class="ps-tag">Шаг 2 · <b>бесплатно</b></span>
           <h3>Профиль в T-баллах</h3>
-          <p class="muted mb-0">Система считает баллы по ключам, применяет K-коррекцию, переводит результат
-            в T-баллы по нормам вашего пола и строит график-профиль с коридором нормы 30–70.</p>
+          <p>Система считает баллы по ключам, применяет K-коррекцию, переводит результат
+            в T-баллы по нормам вашего пола и строит график с коридором нормы 30–70.</p>
         </div>
-        <div class="card step-card">
-          <span class="step-num">Шаг 3 / платно</span>
+        <div class="process-step">
+          <div class="ps-marker" aria-hidden="true">
+            <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l1.8 4.6L18 9.4l-4.2 1.8L12 16l-1.8-4.8L6 9.4l4.2-1.8z"/><path d="M19 15l.9 2.3L22 18l-2.1.7L19 21l-.9-2.3L16 18l2.1-.7z"/></svg>
+          </div>
+          <span class="ps-tag">Шаг 3 · <b>платно</b></span>
           <h3>ИИ-интерпретация</h3>
-          <p class="muted mb-0">После короткого уточняющего опросника искусственный интеллект готовит развёрнутый
-            текстовый разбор профиля. Данные передаются обезличенно — без имени и контактов.</p>
+          <p>После уточняющего опросника ИИ готовит развёрнутый текстовый разбор профиля
+            и сочетаний шкал. Данные передаются обезличенно — без имени и контактов.</p>
         </div>
       </div>
     </div>
   </section>
 
   <!-- ШКАЛЫ -->
-  <section class="section">
+  <section class="section section-tint">
     <div class="container">
-      <div class="grid-2" style="gap:clamp(28px,5vw,64px);align-items:start">
+      <div class="grid-2" style="gap:clamp(24px,4vw,56px);align-items:end;margin-bottom:26px">
         <div>
           <div class="overline"><span class="num">03</span> Структура методики</div>
-          <h2>13 шкал одного профиля</h2>
-          <p class="muted">Три оценочные шкалы — L, F и K — измеряют достоверность протокола: искренность ответов,
-            их атипичность и защитную закрытость. Десять базовых шкал описывают устойчивые особенности личности —
-            от соматизации тревоги до социальной интроверсии.</p>
-          <p class="muted">Результат каждой шкалы переводится в T-баллы: 50 — среднее по нормативной выборке,
-            10 — стандартное отклонение. Значения в коридоре 30–70 считаются вариантом нормы.</p>
-          <a class="btn btn-soft" href="about.html">Подробнее о методике</a>
+          <h2 class="mb-0">13 шкал одного профиля</h2>
         </div>
-        <div class="scale-strip" id="scales-strip" aria-label="Шкалы методики">
-          <span class="scale-chip"><b>L</b> · шкала лжи</span>
-          <span class="scale-chip"><b>F</b> · достоверность</span>
-          <span class="scale-chip"><b>K</b> · коррекция</span>
-          <span class="scale-chip"><b>1</b> · соматизация тревоги</span>
-          <span class="scale-chip"><b>2</b> · тревога и депрессивные тенденции</span>
-          <span class="scale-chip"><b>3</b> · вытеснение факторов тревоги</span>
-          <span class="scale-chip"><b>4</b> · реализация напряжённости в поведении</span>
-          <span class="scale-chip"><b>5</b> · мужские и женские черты</span>
-          <span class="scale-chip"><b>6</b> · ригидность аффекта</span>
-          <span class="scale-chip"><b>7</b> · фиксация тревоги</span>
-          <span class="scale-chip"><b>8</b> · аутизация</span>
-          <span class="scale-chip"><b>9</b> · отрицание тревоги</span>
-          <span class="scale-chip"><b>0</b> · социальная интроверсия</span>
+        <div>
+          <p class="muted mb-0">Три оценочные шкалы измеряют достоверность протокола, десять базовых описывают
+            устойчивые особенности личности. Каждая переводится в T-баллы: 50 — среднее по нормативной
+            выборке, 10 — стандартное отклонение, коридор нормы — 30–70.</p>
         </div>
+      </div>
+      <div class="scale-legend" aria-hidden="true">
+        <span><span class="dot validity"></span>оценочные шкалы</span>
+        <span><span class="dot clinical"></span>базовые шкалы</span>
+      </div>
+      <div class="scale-grid" aria-label="Шкалы методики ММИЛ">
+        <div class="scale-card" data-group="validity"><span class="sc-code">L <span class="sc-mmpi">L</span></span><b>Шкала лжи</b><span class="sc-desc">стремление выглядеть социально одобряемо</span></div>
+        <div class="scale-card" data-group="validity"><span class="sc-code">F <span class="sc-mmpi">F</span></span><b>Достоверность</b><span class="sc-desc">атипичность ответов, небрежность</span></div>
+        <div class="scale-card" data-group="validity"><span class="sc-code">K <span class="sc-mmpi">K</span></span><b>Коррекция</b><span class="sc-desc">защитная закрытость самораскрытия</span></div>
+        <div class="scale-card" data-group="clinical"><span class="sc-code">1 <span class="sc-mmpi">Hs</span></span><b>Соматизация тревоги</b><span class="sc-desc">внимание к телесным ощущениям</span></div>
+        <div class="scale-card" data-group="clinical"><span class="sc-code">2 <span class="sc-mmpi">D</span></span><b>Тревога и депрессивные тенденции</b><span class="sc-desc">сниженный фон настроения</span></div>
+        <div class="scale-card" data-group="clinical"><span class="sc-code">3 <span class="sc-mmpi">Hy</span></span><b>Вытеснение факторов тревоги</b><span class="sc-desc">эмоциональная лабильность</span></div>
+        <div class="scale-card" data-group="clinical"><span class="sc-code">4 <span class="sc-mmpi">Pd</span></span><b>Реализация напряжённости</b><span class="sc-desc">импульсивность, нонконформизм</span></div>
+        <div class="scale-card" data-group="clinical"><span class="sc-code">5 <span class="sc-mmpi">Mf</span></span><b>Мужские и женские черты</b><span class="sc-desc">профиль интересов и предпочтений</span></div>
+        <div class="scale-card" data-group="clinical"><span class="sc-code">6 <span class="sc-mmpi">Pa</span></span><b>Ригидность аффекта</b><span class="sc-desc">устойчивость установок, недоверчивость</span></div>
+        <div class="scale-card" data-group="clinical"><span class="sc-code">7 <span class="sc-mmpi">Pt</span></span><b>Фиксация тревоги</b><span class="sc-desc">перфекционизм, навязчивые сомнения</span></div>
+        <div class="scale-card" data-group="clinical"><span class="sc-code">8 <span class="sc-mmpi">Sc</span></span><b>Аутизация</b><span class="sc-desc">своеобразие мышления, отгороженность</span></div>
+        <div class="scale-card" data-group="clinical"><span class="sc-code">9 <span class="sc-mmpi">Ma</span></span><b>Отрицание тревоги</b><span class="sc-desc">активность, приподнятое настроение</span></div>
+        <div class="scale-card" data-group="clinical"><span class="sc-code">0 <span class="sc-mmpi">Si</span></span><b>Социальная интроверсия</b><span class="sc-desc">избирательность контактов</span></div>
+      </div>
+      <div style="display:flex;gap:14px;flex-wrap:wrap;margin-top:24px">
+        <a class="btn btn-soft" href="about.html">Подробнее о методике</a>
+        <a class="btn btn-ghost" href="guide.html">Как читать профиль</a>
       </div>
     </div>
   </section>
@@ -161,6 +177,7 @@
           <a class="btn btn-ghost" href="test.html">Пройти тест</a>
         </div>
         <div class="card price-card featured">
+          <span class="price-stamp" aria-hidden="true">рекомендуем</span>
           <span class="badge badge-accent">Расширенный · ИИ</span>
           <div class="price">499 ₽ <small>за интерпретацию</small></div>
           <ul>
@@ -180,25 +197,49 @@
   </section>
 
   <!-- ЭТИКА -->
-  <section class="section">
+  <section class="section section-tint">
     <div class="container">
-      <div class="overline"><span class="num">05</span> Наука и этика</div>
-      <h2>Бережно к данным и к вам</h2>
-      <div class="grid-3" style="margin-top:30px">
-        <div class="card">
-          <h3>Обезличивание</h3>
-          <p class="muted mb-0">В ИИ-сервис передаются только T-баллы, флаги достоверности, пол и ответы
-            уточняющего опросника. Никаких имён, контактов и идентификаторов.</p>
+      <div class="grid-2" style="gap:clamp(28px,5vw,72px);align-items:start">
+        <div>
+          <div class="overline"><span class="num">05</span> Наука и этика</div>
+          <h2>Бережно к данным и к вам</h2>
+          <p class="muted">Результаты психологического теста — чувствительная информация.
+            Четыре принципа, на которых построен сервис, — не маркетинг, а рабочие правила обработки данных.</p>
+          <span class="age-badge" style="margin-top:6px;display:inline-block">18+</span>
         </div>
-        <div class="card">
-          <h3>152-ФЗ</h3>
-          <p class="muted mb-0">Результаты психологического теста — специальная категория персональных данных.
-            Обработка возможна только с вашего явного согласия, которое запрашивается до старта.</p>
-        </div>
-        <div class="card">
-          <h3>Не диагноз</h3>
-          <p class="muted mb-0">Профиль и интерпретация — инструмент самоисследования для взрослых (18+).
-            Они не являются медицинским диагнозом и не заменяют консультацию специалиста.</p>
+        <div class="principles">
+          <div class="principle">
+            <span class="pr-num" aria-hidden="true">01</span>
+            <div>
+              <h3>Обезличивание перед ИИ</h3>
+              <p>В ИИ-сервис передаются только T-баллы, флаги достоверности, пол и ответы уточняющего
+                опросника. Никаких имён, контактов и идентификаторов.</p>
+            </div>
+          </div>
+          <div class="principle">
+            <span class="pr-num" aria-hidden="true">02</span>
+            <div>
+              <h3>Явное согласие — 152-ФЗ</h3>
+              <p>Результаты теста относятся к специальной категории персональных данных.
+                Обработка начинается только после вашего явного согласия перед стартом теста.</p>
+            </div>
+          </div>
+          <div class="principle">
+            <span class="pr-num" aria-hidden="true">03</span>
+            <div>
+              <h3>Право на удаление</h3>
+              <p>Все результаты, ответы и интерпретации можно стереть безвозвратно в один клик
+                на странице «Мои результаты» — без запросов и ожидания.</p>
+            </div>
+          </div>
+          <div class="principle">
+            <span class="pr-num" aria-hidden="true">04</span>
+            <div>
+              <h3>Не диагноз</h3>
+              <p>Профиль и интерпретация — инструмент самоисследования для взрослых. Они не являются
+                медицинским диагнозом и не заменяют консультацию специалиста.</p>
+            </div>
+          </div>
         </div>
       </div>
     </div>
@@ -207,9 +248,18 @@
   <!-- FAQ -->
   <section class="section" id="faq">
     <div class="container">
-      <div class="overline"><span class="num">06</span> Вопросы и ответы</div>
-      <h2>Частые вопросы</h2>
-      <div style="max-width:820px;margin-top:14px">
+      <div class="faq-layout">
+        <div class="faq-aside">
+          <div class="overline"><span class="num">06</span> Вопросы и ответы</div>
+          <h2>Частые вопросы</h2>
+          <p class="muted">Коротко о методике, T-баллах, достоверности и устройстве платного разбора.</p>
+          <div class="callout">
+            <p class="mb-0"><strong>Не нашли ответ?</strong> Напишите на
+              <a href="mailto:hello@psychograph.example">hello@psychograph.example</a> — или загляните в
+              <a href="guide.html">гид по чтению профиля</a>.</p>
+          </div>
+        </div>
+        <div>
         <!--CONTENT:faq-->
 <details class="faq-item"><summary>Что такое ММИЛ?</summary><div class="faq-body"><p>ММИЛ — «Методика многостороннего исследования личности», российская адаптация американского опросника MMPI, выполненная Ф. Б. Березиным, М. П. Мирошниковым и Р. В. Рожанцом. Она включает 377 утверждений, на каждое из которых нужно ответить «верно» или «неверно» применительно к себе.</p><p>Результат представляется в виде профиля из 13 шкал: трёх оценочных (достоверности) и десяти базовых, описывающих устойчивые особенности личности и актуальное психическое состояние.</p></div></details>
 <details class="faq-item"><summary>Чем ММИЛ отличается от MMPI и СМИЛ?</summary><div class="faq-body"><p>Оригинальный MMPI создан в США в 1940-е годы и содержит более 500 утверждений. ММИЛ — не простой перевод, а научная адаптация: авторы отобрали 377 утверждений, переработали формулировки с учётом языковых и культурных различий и собрали собственные нормы на отечественной выборке.</p><p>СМИЛ — другая известная адаптация MMPI, выполненная Л. Н. Собчик; она ближе к полной версии опросника и использует несколько иную интерпретационную модель. ММИЛ и СМИЛ — родственные, но самостоятельные методики со своими нормами, поэтому их результаты нельзя напрямую сравнивать между собой.</p></div></details>
@@ -221,6 +271,7 @@
 <details class="faq-item"><summary>Результат теста — это диагноз?</summary><div class="faq-body"><p>Нет. ММИЛ — инструмент психологического самоисследования, а не медицинской диагностики. Ни профиль, ни ИИ-интерпретация не являются медицинским заключением и не заменяют консультацию врача-психиатра, психотерапевта или клинического психолога.</p><p>Если результаты вас встревожили или вы испытываете выраженный дискомфорт, обратитесь к специалисту — очная консультация всегда информативнее любого опросника.</p></div></details>
 <details class="faq-item"><summary>Как удалить свои данные?</summary><div class="faq-body"><p>В демо-версии все данные — ответы, профили и интерпретации — хранятся только локально в вашем браузере и никуда не отправляются. Удалить их можно в любой момент кнопкой «Удалить все данные» на странице «Мои результаты» — безвозвратно.</p><p>В боевой версии с личным кабинетом удаление аккаунта и всех связанных данных выполняется в настройках кабинета или запросом в поддержку (право на удаление по 152-ФЗ). Обезличенные данные, переданные в ИИ-сервис, к вам не привязаны и вашу личность не раскрывают.</p></div></details>
 <!--/CONTENT:faq-->
+        </div>
       </div>
     </div>
   </section>
@@ -236,6 +287,7 @@
       <p class="muted" style="max-width:52ch;margin-inline:auto">Бесплатно, с автосохранением и без спешки.
         График останется в вашей истории — к нему всегда можно вернуться.</p>
       <a class="btn btn-primary btn-lg" href="test.html" style="margin-top:10px">Начать тестирование</a>
+      <p class="small muted" style="margin-top:18px">Без регистрации · данные остаются в вашем браузере · 18+</p>
     </div>
   </section>
 </main>

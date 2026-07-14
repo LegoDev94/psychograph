@@ -179,7 +179,7 @@ export function initRise(root = document) {
       if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
     }
   }, { threshold: 0.12, rootMargin: '0px 0px -40px' });
-  root.querySelectorAll('.section .card:not([data-no-rise]), .section .faq-item, .scale-strip .scale-chip')
+  root.querySelectorAll('.section .card:not([data-no-rise]), .section .faq-item, .scale-grid .scale-card, .process-step, .principle')
     .forEach((node, i) => {
       if (node.classList.contains('rise') || node.closest('[hidden]')) return;
       node.classList.add('rise');
