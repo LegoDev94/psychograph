@@ -63,7 +63,7 @@ export function tBand(t) {
 }
 
 export const BAND_LABELS = {
-  low: 'Ниже нормы',
+  low: 'Ниже типичных значений',
   norm: 'В пределах нормы',
   mild: 'Умеренное повышение',
   high: 'Выраженное повышение',
@@ -138,6 +138,11 @@ export function buildInterpretation(interp, scored, scalesMeta) {
     if (lib) parts.push({ code: s.code, name: s.name, t: scored.t[s.code], band, text: lib[band] });
   }
   const elevated = new Set(clinical.filter(s => scored.t[s.code] > 65).map(s => s.code));
-  const combos = (interp.combos || []).filter(c => c.scales.every(code => elevated.has(code)));
+  // код шкалы в комбинации может иметь суффикс "-low" — тогда требуется снижение, а не подъём
+  const matches = code => {
+    const [c, mod] = code.split('-');
+    return mod === 'low' ? tBand(scored.t[c]) === 'low' : elevated.has(c);
+  };
+  const combos = (interp.combos || []).filter(c => c.scales.every(matches));
   return { parts, combos };
 }

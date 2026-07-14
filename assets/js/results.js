@@ -37,6 +37,9 @@ function renderResult(r) {
     getChart = mountProfileChart(el, () => buildProfileOption({
       scales: TEST.scales, t: r.t, colors: chartColors(),
     }));
+  } else {
+    el.innerHTML = '<p class="muted" style="padding:40px 20px;text-align:center">Не удалось загрузить библиотеку графика — точные значения по всем шкалам приведены в таблице ниже.</p>';
+    $('btn-png').disabled = true;
   }
 
   /* --- таблица --- */
@@ -68,7 +71,7 @@ function renderResult(r) {
   } else {
     if (high.length) text += `<p>Выраженное повышение (T&nbsp;&gt;&nbsp;70): ${high.map(s => `<strong>${esc(s.name.toLowerCase())}</strong> (шкала ${s.code}, T=${r.t[s.code]})`).join(', ')}.</p>`;
     if (mild.length) text += `<p>Умеренное повышение (60–70): ${mild.map(s => `${esc(s.name.toLowerCase())} (${s.code}, T=${r.t[s.code]})`).join(', ')} — уровень акцентуации, заострения отдельных черт.</p>`;
-    if (low.length) text += `<p>Ниже коридора нормы: ${low.map(s => `${esc(s.name.toLowerCase())} (${s.code}, T=${r.t[s.code]})`).join(', ')}.</p>`;
+    if (low.length) text += `<p>Ниже типичного диапазона (T&nbsp;&lt;&nbsp;40): ${low.map(s => `${esc(s.name.toLowerCase())} (${s.code}, T=${r.t[s.code]})`).join(', ')}.</p>`;
     text += '<p class="muted small">Что стоит за этими повышениями, как они сочетаются между собой и с вашим текущим контекстом — предмет расширенной интерпретации.</p>';
   }
   $('summary-text').innerHTML = text;

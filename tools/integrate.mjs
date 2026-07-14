@@ -18,6 +18,12 @@ const parsed = JSON.parse(jsonText);
 const { items, interp, copy } = parsed.result ?? parsed;
 if (!items?.items || !interp?.scales || !copy?.faq) { console.error('Неожиданная структура результата воркфлоу'); process.exit(1); }
 
+/* точечные правки формулировок сгенерированного банка */
+const TEXT_PATCHES = {
+  10: 'Мне почти каждую ночь снится один и тот же сон.',
+};
+for (const it of items.items) if (TEXT_PATCHES[it.id]) it.text = TEXT_PATCHES[it.id];
+
 /* ---------- метаданные шкал (названия по Ф. Б. Березину) ---------- */
 const SCALES = [
   { code: 'L', mmpi: 'L',  group: 'validity', name: 'Шкала лжи',            desc: 'Стремление выглядеть социально одобряемо' },
@@ -35,6 +41,20 @@ const SCALES = [
   { code: '0', mmpi: 'Si', group: 'clinical', name: 'Социальная интроверсия', desc: 'Обращённость внутрь, избирательность контактов' },
 ];
 
+/* ---------- валидация банка ---------- */
+const validCodes = new Set(SCALES.map(s => s.code));
+const seenIds = new Set();
+for (const it of items.items) {
+  if (!Number.isInteger(it.id) || seenIds.has(it.id)) { console.error('Дублирующийся/некорректный id пункта:', it.id); process.exit(1); }
+  seenIds.add(it.id);
+  for (const k of it.keys) {
+    if (!validCodes.has(k.scale)) { console.error(`Пункт ${it.id}: неизвестная шкала "${k.scale}"`); process.exit(1); }
+    if (!['T', 'F'].includes(k.keyed) || (k.keyedFemale && !['T', 'F'].includes(k.keyedFemale))) {
+      console.error(`Пункт ${it.id}: некорректный ключ`); process.exit(1);
+    }
+  }
+}
+
 /* ---------- нормы (демо): M и σ из фактического числа пунктов банка ---------- */
 const counts = {};
 for (const s of SCALES) counts[s.code] = 0;
@@ -47,11 +67,19 @@ function buildNorms(form) {
   const mK = +(0.40 * counts.K).toFixed(1);
   for (const s of SCALES) {
     const n = counts[s.code];
-    let m = 0.40 * n;
-    if (form === 'female' && (s.code === '2' || s.code === '3')) m += 0.4;
-    if (form === 'male' && (s.code === '4' || s.code === '9')) m += 0.4;
-    if (CORRECTION[s.code]) m += CORRECTION[s.code] * mK;
-    const sd = Math.max(1.5, 0.24 * n + (CORRECTION[s.code] ? 0.6 * CORRECTION[s.code] : 0));
+    let m, sd;
+    /* оценочные шкалы: реалистичные средние, чтобы пороги достоверности были достижимы:
+       F — редко подтверждаемые утверждения (низкое M), L — маловероятные добродетели */
+    if (s.code === 'F') { m = 0.15 * n; sd = Math.max(1.2, 0.17 * n); }
+    else if (s.code === 'L') { m = 0.25 * n; sd = Math.max(1.2, 0.20 * n); }
+    else if (s.code === 'K') { m = 0.40 * n; sd = Math.max(1.5, 0.21 * n); }
+    else {
+      m = 0.40 * n;
+      if (form === 'female' && (s.code === '2' || s.code === '3')) m += 0.4;
+      if (form === 'male' && (s.code === '4' || s.code === '9')) m += 0.4;
+      if (CORRECTION[s.code]) m += CORRECTION[s.code] * mK;
+      sd = Math.max(1.5, 0.24 * n + (CORRECTION[s.code] ? 0.6 * CORRECTION[s.code] : 0));
+    }
     norms[s.code] = { m: +m.toFixed(1), sd: +sd.toFixed(1) };
   }
   return norms;
@@ -84,8 +112,27 @@ writeFileSync(resolve(root, 'assets/data/interp.js'),
 console.log('✓ assets/data/interp.js (' + interp.scales.length + ' шкал, ' + interp.combos.length + ' паттернов)');
 
 /* ---------- вставка контента в страницы ---------- */
-const faqHtml = copy.faq.map(f =>
+/* правки сгенерированных текстов (согласование терминологии и фактов с интерфейсом) */
+const patch = (str, pairs) => pairs.reduce((s, [a, b]) => s.split(a).join(b), str);
+
+copy.aboutProject = patch(copy.aboutProject, [
+  ['Вы в любой момент можете удалить свой аккаунт и все результаты.',
+   'Все данные можно удалить в любой момент: в демо-версии — кнопкой «Удалить все данные» на странице «Мои результаты» (данные хранятся только в вашем браузере), в боевой версии — через настройки личного кабинета.'],
+]);
+
+let faqHtml = copy.faq.map(f =>
   `<details class="faq-item"><summary>${f.q}</summary><div class="faq-body">${f.a}</div></details>`).join('\n');
+
+faqHtml = patch(faqHtml, [
+  ['на каждое из которых нужно ответить «верно» или «неверно» применительно к себе.',
+   'на каждое из которых нужно ответить «верно», «неверно» или «не знаю» применительно к себе.'],
+  ['<p>В среднем ответы на 377 утверждений занимают от 40 минут до полутора часов — темп у всех разный, и это нормально.',
+   '<p>Полная форма из 377 утверждений обычно занимает 30–60 минут, у кого-то — дольше: темп у всех разный, и это нормально. Демо-банк из 102 утверждений проходится за 10–15 минут.'],
+  ['<p>Диапазон примерно от 40 до 60 T-баллов считается «коридором нормы» — типичной зоной, куда попадает большинство людей.',
+   '<p>«Коридором нормы» считается диапазон 30–70 T-баллов; типичная зона, куда попадает большинство людей, — примерно 40–60.'],
+  ['<p>Вы можете в любой момент удалить свой аккаунт и все связанные с ним данные, включая ответы на утверждения и результаты тестирования, в настройках личного кабинета либо направив запрос на адрес поддержки, указанный в политике конфиденциальности.</p><p>После подтверждения запроса данные удаляются безвозвратно в срок, установленный законодательством о персональных данных.',
+   '<p>В демо-версии все данные — ответы, профили и интерпретации — хранятся только локально в вашем браузере и никуда не отправляются. Удалить их можно в любой момент кнопкой «Удалить все данные» на странице «Мои результаты» — безвозвратно.</p><p>В боевой версии с личным кабинетом удаление аккаунта и всех связанных данных выполняется в настройках кабинета или запросом в поддержку (право на удаление по 152-ФЗ).'],
+]);
 
 const injections = [
   ['index.html', 'faq', faqHtml],

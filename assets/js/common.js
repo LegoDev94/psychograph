@@ -66,6 +66,14 @@ const NAV_ITEMS = [
 ];
 
 export function initChrome(active = '') {
+  if (!document.querySelector('.skip-link')) {
+    const skip = document.createElement('a');
+    skip.className = 'skip-link';
+    skip.href = '#main';
+    skip.textContent = 'К содержимому';
+    document.body.prepend(skip);
+  }
+
   const header = document.getElementById('site-header');
   if (header) {
     header.className = 'site-header';
@@ -81,7 +89,7 @@ export function initChrome(active = '') {
             <svg class="icon-sun" width="17" height="17" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="12" r="4"/><path d="M12 2v2m0 16v2M4.9 4.9l1.4 1.4m11.4 11.4 1.4 1.4M2 12h2m16 0h2M4.9 19.1l1.4-1.4m11.4-11.4 1.4-1.4"/></svg>
           </button>
           <a class="btn btn-primary btn-sm no-print" href="test.html">Пройти тест</a>
-          <button class="nav-burger" id="nav-burger" type="button" aria-label="Открыть меню" aria-expanded="false">
+          <button class="nav-burger" id="nav-burger" type="button" aria-label="Меню" aria-controls="site-nav" aria-expanded="false">
             <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M3 6h18M3 12h18M3 18h18"/></svg>
           </button>
         </div>
@@ -89,9 +97,14 @@ export function initChrome(active = '') {
     header.querySelector('#theme-toggle').addEventListener('click', toggleTheme);
     const burger = header.querySelector('#nav-burger');
     const nav = header.querySelector('#site-nav');
-    burger.addEventListener('click', () => {
-      const open = nav.classList.toggle('open');
+    const setOpen = open => {
+      nav.classList.toggle('open', open);
       burger.setAttribute('aria-expanded', String(open));
+    };
+    burger.addEventListener('click', () => setOpen(!nav.classList.contains('open')));
+    nav.addEventListener('click', e => { if (e.target.closest('a')) setOpen(false); });
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && nav.classList.contains('open')) { setOpen(false); burger.focus(); }
     });
   }
 
@@ -173,4 +186,27 @@ export function chartColors() {
 /* пересборка графика при смене темы */
 export function onThemeChange(fn) {
   document.addEventListener('pg:theme', fn);
+}
+
+/* печать всегда в светлой теме: перерисовываем графики на время печати */
+let printRestoreTheme = null;
+window.addEventListener('beforeprint', () => {
+  if (currentTheme() === 'dark') {
+    printRestoreTheme = 'dark';
+    document.documentElement.dataset.theme = 'light';
+    document.dispatchEvent(new CustomEvent('pg:theme', { detail: 'light' }));
+  }
+});
+window.addEventListener('afterprint', () => {
+  if (printRestoreTheme) {
+    document.documentElement.dataset.theme = printRestoreTheme;
+    document.dispatchEvent(new CustomEvent('pg:theme', { detail: printRestoreTheme }));
+    printRestoreTheme = null;
+  }
+});
+
+/* показ <dialog> с фолбэком для браузеров без showModal */
+export function openModal(dialog) {
+  if (typeof dialog.showModal === 'function') { dialog.showModal(); return true; }
+  return false;
 }

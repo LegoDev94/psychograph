@@ -15,7 +15,7 @@
 <body>
 <header id="site-header"></header>
 
-<main>
+<main id="main">
   <section class="section" id="analysis-root" style="padding-top:clamp(32px,5vw,56px)">
     <div class="container" style="max-width:860px">
       <div class="overline"><span class="num">И-01</span> Расширенная интерпретация <span class="stamp tag-demo">демо-режим</span></div>
@@ -84,7 +84,7 @@
             <input type="password" id="deepseek-key" placeholder="sk-…" autocomplete="off">
           </div>
           <button class="btn btn-primary btn-lg" id="btn-generate">Сгенерировать разбор</button>
-          <div class="gen-status card" id="gen-status" hidden style="margin-top:18px">
+          <div class="gen-status card" id="gen-status" role="status" hidden style="margin-top:18px">
             <span class="dot"></span><span id="gen-status-text">Задача поставлена в очередь…</span>
           </div>
         </div>
@@ -116,16 +116,16 @@
 
 <footer id="site-footer"></footer>
 
-<dialog class="modal" id="pay-modal">
-  <h3 style="margin-bottom:6px">Имитация эквайринга</h3>
-  <p class="small muted">Демонстрация сценария: заказ → страница банка → callback об успешной оплате → доступ к анализу.</p>
+<dialog class="modal" id="pay-modal" aria-labelledby="pay-modal-title" aria-describedby="pay-modal-desc">
+  <h3 id="pay-modal-title" style="margin-bottom:6px">Имитация эквайринга</h3>
+  <p class="small muted" id="pay-modal-desc">Демонстрация сценария: заказ → страница банка → callback об успешной оплате → доступ к анализу.</p>
   <div class="card" style="padding:14px 16px;margin:10px 0 4px">
     <div style="display:flex;justify-content:space-between;font-size:.92rem"><span>Расширенная ИИ-интерпретация</span><b class="mono">499 ₽</b></div>
     <div style="display:flex;justify-content:space-between;font-size:.8rem;color:var(--ink-3);margin-top:4px"><span>Чек 54-ФЗ (демо)</span><span class="mono">№ 0000-DEMO</span></div>
   </div>
   <div class="modal-actions">
     <button class="btn btn-ghost" id="pay-cancel">Отмена</button>
-    <button class="btn btn-primary" id="pay-confirm">Имитировать успешную оплату</button>
+    <button class="btn btn-primary" id="pay-confirm">Подтвердить оплату (демо)</button>
   </div>
 </dialog>
 

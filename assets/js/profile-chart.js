@@ -9,7 +9,10 @@ export function buildProfileOption({ scales, t, colors, compact = false }) {
   const codes = scales.map(s => s.code);
   const values = scales.map(s => t[s.code]);
 
+  const mono = colors.fontMono.replace(/"/g, "'"); // безопасно для inline-style тултипа
+
   return {
+    animation: !matchMedia('(prefers-reduced-motion: reduce)').matches,
     animationDuration: 900,
     animationEasing: 'cubicOut',
     grid: {
@@ -27,8 +30,8 @@ export function buildProfileOption({ scales, t, colors, compact = false }) {
         const p = params[0];
         const scale = scales[p.dataIndex];
         const band = BAND_LABELS[tBand(p.value)];
-        return `<b style="font-family:${colors.fontMono}">${scale.code}</b> · ${scale.name}` +
-               `<br><span style="font-family:${colors.fontMono};font-size:15px">T = ${p.value}</span>` +
+        return `<b style="font-family:${mono}">${scale.code}</b> · ${scale.name}` +
+               `<br><span style="font-family:${mono};font-size:15px">T = ${p.value}</span>` +
                ` <span style="opacity:.65">· ${band}</span>`;
       },
     },

@@ -3,7 +3,7 @@ import { initChrome, store, results, uid, toast, fmtDate } from './common.js';
 import { TEST } from '../data/mmil.js';
 import { scoreAttempt } from './engine.js';
 
-initChrome('catalog');
+initChrome('');
 
 const SESSION_KEY = 'session.' + TEST.id;
 const $ = id => document.getElementById(id);
@@ -12,6 +12,9 @@ const screens = { intro: $('screen-intro'), quiz: $('screen-quiz'), finish: $('s
 function show(name) {
   for (const [k, el] of Object.entries(screens)) el.hidden = k !== name;
   window.scrollTo({ top: 0, behavior: 'instant' });
+  // фокус на новый экран, чтобы не терять его при скрытии старого
+  const focusTarget = { quiz: $('q-text'), finish: $('finish-title') }[name];
+  if (focusTarget) focusTarget.focus({ preventScroll: true });
 }
 
 let session = null; // { form, answers: {id: 1|0|null}, idx, startedAt }
@@ -76,7 +79,9 @@ function render() {
   const a = session.answers[item.id];
   document.querySelectorAll('.answer-btn').forEach(btn => {
     const v = btn.dataset.answer === 'null' ? null : Number(btn.dataset.answer);
-    btn.classList.toggle('selected', a !== undefined && v === a);
+    const selected = a !== undefined && v === a;
+    btn.classList.toggle('selected', selected);
+    btn.setAttribute('aria-pressed', String(selected));
   });
 
   const answered = Object.keys(session.answers).length;
@@ -90,19 +95,26 @@ function render() {
   $('btn-next').textContent = i === total - 1 ? 'Завершить' : 'Далее →';
 }
 
+let advanceTimer = null; // защита от двойного продвижения (двойной клик / автоповтор клавиши)
+
 function setAnswer(v) {
   const item = TEST.items[session.idx];
   session.answers[item.id] = v;
   persist();
   render();
-  setTimeout(next, 160); // короткая пауза, чтобы был виден выбор
+  clearTimeout(advanceTimer);
+  advanceTimer = setTimeout(next, 160); // короткая пауза, чтобы был виден выбор
 }
 
 function next() {
+  clearTimeout(advanceTimer);
+  advanceTimer = null;
   if (session.idx < TEST.items.length - 1) { session.idx++; persist(); render(); }
   else finish();
 }
 function prev() {
+  clearTimeout(advanceTimer);
+  advanceTimer = null;
   if (session.idx > 0) { session.idx--; persist(); render(); }
 }
 
@@ -111,13 +123,17 @@ document.querySelectorAll('.answer-btn').forEach(btn => {
 });
 $('btn-next').addEventListener('click', next);
 $('btn-prev').addEventListener('click', prev);
-$('btn-pause').addEventListener('click', () => {
-  toast('Ответы сохранены — вернуться можно с этой же страницы');
-  location.href = 'index.html';
+$('btn-pause').addEventListener('click', e => {
+  e.target.disabled = true;
+  toast('Ответы сохранены — продолжить можно со страницы теста в любой момент');
+  setTimeout(() => { location.href = 'index.html'; }, 900);
 });
 
 document.addEventListener('keydown', e => {
   if (screens.quiz.hidden) return;
+  if (e.ctrlKey || e.metaKey || e.altKey || e.repeat) return;
+  const tag = document.activeElement?.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
   if (e.key === '1') setAnswer(1);
   else if (e.key === '2') setAnswer(0);
   else if (e.key === '3') setAnswer(null);

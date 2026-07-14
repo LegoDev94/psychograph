@@ -55,6 +55,10 @@ function render() {
 
 function confirmDialog(title, text, onOk) {
   const modal = $('confirm-modal');
+  if (typeof modal.showModal !== 'function') {
+    if (window.confirm(title + '\n' + text)) onOk();
+    return;
+  }
   $('confirm-title').textContent = title;
   $('confirm-text').textContent = text;
   const okBtn = $('confirm-ok');

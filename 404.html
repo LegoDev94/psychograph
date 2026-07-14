@@ -4,6 +4,15 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Страница не найдена — Психограф</title>
+<script>
+/* 404 отдаётся для любого несуществующего URL — относительные пути ломаются на глубоких адресах.
+   Первый сегмент пути на GitHub Pages — имя репозитория (если это не файл). */
+(function () {
+  var seg = location.pathname.split('/')[1] || '';
+  var base = location.origin + '/' + (seg && seg.indexOf('.') === -1 ? seg + '/' : '');
+  document.write('<base href="' + base + '">');
+})();
+</script>
 <meta name="robots" content="noindex">
 <link rel="icon" href="favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -14,7 +23,7 @@
 </head>
 <body>
 <header id="site-header"></header>
-<main>
+<main id="main">
   <section class="section">
     <div class="container">
       <div class="empty-state">

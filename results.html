@@ -15,7 +15,7 @@
 <body>
 <header id="site-header"></header>
 
-<main>
+<main id="main">
   <section class="section" id="result-root" style="padding-top:clamp(32px,5vw,56px)">
     <div class="container">
       <div class="print-only" style="margin-bottom:14px">
@@ -54,12 +54,12 @@
       <div style="overflow-x:auto">
         <table class="scale-table" id="scale-table">
           <thead>
-            <tr><th>Код</th><th>Шкала</th><th>Сырой балл</th><th>С коррекцией</th><th>T-балл</th><th>Диапазон</th></tr>
+            <tr><th scope="col">Код</th><th scope="col">Шкала</th><th scope="col">Сырой балл</th><th scope="col">С коррекцией</th><th scope="col">T-балл</th><th scope="col">Диапазон</th></tr>
           </thead>
           <tbody></tbody>
         </table>
       </div>
-      <p class="small muted" style="margin-top:10px">K-коррекция по ТЗ: Hs +0.5·K, Pd +0.4·K, Pt +1.0·K, Sc +1.0·K, Ma +0.2·K.
+      <p class="small muted" style="margin-top:10px">K-коррекция: Hs +0.5·K, Pd +0.4·K, Pt +1.0·K, Sc +1.0·K, Ma +0.2·K.
         Перевод в T-баллы: T = 50 + 10·(X − M)/σ, нормы — по полу (в демо-версии нормы условные).</p>
 
       <div class="card" style="margin-top:26px" id="free-summary">

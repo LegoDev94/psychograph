@@ -89,7 +89,22 @@ console.log('6. Достоверность');
     TEST.scales.every(s => Number.isFinite(rr.t[s.code])));
 }
 
-console.log('7. Полный сквозной расчёт');
+console.log('7. Достижимость порогов достоверности');
+{
+  const rules = TEST.validityRules;
+  for (const form of ['male', 'female']) {
+    const maxT = code => {
+      const n = TEST.items.reduce((acc, it) => acc + (it.keys.some(k => k.scale === code) ? 1 : 0), 0);
+      const { m, sd } = TEST.norms[form][code];
+      return Math.round(50 + 10 * ((n - m) / sd));
+    };
+    check(`[${form}] max T(F)=${maxT('F')} > fInvalidT=${rules.fInvalidT}`, maxT('F') > rules.fInvalidT);
+    check(`[${form}] max T(L)=${maxT('L')} > lCautionT=${rules.lCautionT}`, maxT('L') > rules.lCautionT);
+    check(`[${form}] max T(K)=${maxT('K')} > kCautionT=${rules.kCautionT}`, maxT('K') > rules.kCautionT);
+  }
+}
+
+console.log('8. Полный сквозной расчёт');
 {
   const answers = {};
   for (const [i, it] of TEST.items.entries()) answers[it.id] = i % 3 === 0 ? 1 : (i % 3 === 1 ? 0 : null);

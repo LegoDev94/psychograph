@@ -15,7 +15,7 @@
 <body>
 <header id="site-header"></header>
 
-<main>
+<main id="main">
   <!-- ЭКРАН 1: ИНСТРУКЦИЯ И СОГЛАСИЕ -->
   <section class="section" id="screen-intro">
     <div class="container quiz-shell">
@@ -35,7 +35,7 @@
         <h3 class="mb-0">Перед началом</h3>
         <div>
           <p class="small muted" style="margin-bottom:10px">Форма опросника — от неё зависят ключи и нормы расчёта:</p>
-          <div class="form-pick" role="radiogroup" aria-label="Выбор формы опросника">
+          <div class="form-pick" role="group" aria-label="Выбор формы опросника">
             <button class="pick" type="button" data-form="male" aria-pressed="false"><b>Мужская форма</b><span>ключи и T-нормы для мужчин</span></button>
             <button class="pick" type="button" data-form="female" aria-pressed="false"><b>Женская форма</b><span>ключи и T-нормы для женщин</span></button>
           </div>
@@ -77,11 +77,11 @@
       <div class="container quiz-shell">
         <div class="q-card">
           <div class="q-num"><span id="q-num">Утверждение 1</span><span id="q-form"></span></div>
-          <p class="q-text" id="q-text" aria-live="polite">…</p>
+          <p class="q-text" id="q-text" aria-live="polite" tabindex="-1">…</p>
           <div class="answer-row" role="group" aria-label="Варианты ответа">
-            <button class="answer-btn" type="button" data-answer="1">Верно <kbd>1</kbd></button>
-            <button class="answer-btn" type="button" data-answer="0">Неверно <kbd>2</kbd></button>
-            <button class="answer-btn" type="button" data-answer="null">Не знаю <kbd>3</kbd></button>
+            <button class="answer-btn" type="button" data-answer="1" aria-pressed="false">Верно <kbd>1</kbd></button>
+            <button class="answer-btn" type="button" data-answer="0" aria-pressed="false">Неверно <kbd>2</kbd></button>
+            <button class="answer-btn" type="button" data-answer="null" aria-pressed="false">Не знаю <kbd>3</kbd></button>
           </div>
         </div>
         <div class="quiz-nav">
@@ -100,7 +100,7 @@
     <div class="container quiz-shell">
       <div class="card card-paper" style="text-align:center;padding:clamp(30px,5vw,54px)">
         <div class="overline" style="justify-content:center"><span class="num">Т-02</span> Завершение</div>
-        <h2 id="finish-title">Все утверждения пройдены</h2>
+        <h2 id="finish-title" tabindex="-1">Все утверждения пройдены</h2>
         <p class="muted" id="finish-info" style="max-width:48ch;margin-inline:auto"></p>
         <div style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px">
           <button class="btn btn-ghost" id="btn-unanswered" hidden>К пропущенным</button>

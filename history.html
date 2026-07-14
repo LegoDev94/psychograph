@@ -15,7 +15,7 @@
 <body>
 <header id="site-header"></header>
 
-<main>
+<main id="main">
   <section class="section" style="padding-top:clamp(32px,5vw,56px)">
     <div class="container" style="max-width:860px">
       <div class="overline"><span class="num">К-01</span> Личный архив</div>
@@ -44,7 +44,7 @@
 
 <footer id="site-footer"></footer>
 
-<dialog class="modal" id="confirm-modal">
+<dialog class="modal" id="confirm-modal" aria-labelledby="confirm-title" aria-describedby="confirm-text">
   <h3 id="confirm-title">Удалить?</h3>
   <p class="small muted" id="confirm-text"></p>
   <div class="modal-actions">

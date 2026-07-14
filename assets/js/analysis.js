@@ -1,5 +1,5 @@
 /* ИИ-анализ (M4) + демо-оплата (M5): опросник 15 вопросов → оплата → генерация → отчёт */
-import { initChrome, results, fmtDate, toast, esc } from './common.js';
+import { initChrome, results, fmtDate, toast, esc, openModal } from './common.js';
 import { TEST } from '../data/mmil.js';
 import { INTERP } from '../data/interp.js';
 import { tBand, buildInterpretation } from './engine.js';
@@ -81,6 +81,8 @@ const steps = ['step-q15', 'step-pay', 'step-generate', 'step-report'];
 function showStep(name) {
   for (const s of steps) $(s).hidden = s !== name;
   window.scrollTo({ top: 0, behavior: 'instant' });
+  const heading = $(name).querySelector('h3, h2, .ai-report');
+  if (heading) { heading.setAttribute('tabindex', '-1'); heading.focus({ preventScroll: true }); }
 }
 
 function init(r) {
@@ -100,17 +102,32 @@ function init(r) {
   });
   $('btn-back-q15').addEventListener('click', () => showStep('step-q15'));
 
+  /* предупреждение о достоверности до оплаты (обещано офертой) */
+  if (r.validity.status !== 'ok') {
+    const note = document.createElement('div');
+    note.className = 'callout ' + (r.validity.status === 'invalid' ? 'danger' : 'warn');
+    note.style.marginBottom = '18px';
+    note.innerHTML = r.validity.status === 'invalid'
+      ? '<p class="mb-0"><strong>Обратите внимание до оплаты:</strong> профиль отмечен как сомнительный по оценочным шкалам — развёрнутая интерпретация по шкалам будет ограничена. Рекомендуем сначала пройти тест повторно.</p>'
+      : '<p class="mb-0"><strong>Обратите внимание до оплаты:</strong> по оценочным шкалам профиль следует интерпретировать с осторожностью — это будет учтено в разборе.</p>';
+    $('step-pay').querySelector('.card').prepend(note);
+  }
+
   const modal = $('pay-modal');
-  $('btn-pay').addEventListener('click', () => modal.showModal());
-  $('pay-cancel').addEventListener('click', () => modal.close());
-  $('pay-confirm').addEventListener('click', () => {
-    modal.close();
+  const confirmPay = () => {
     r.paid = true;
     r.paidAt = Date.now();
     results.save(r);
     toast('Оплата подтверждена (демо) — доступ к генерации открыт');
     showStep('step-generate');
+  };
+  $('btn-pay').addEventListener('click', () => {
+    if (!openModal(modal)) {
+      if (window.confirm('Демо-режим: имитировать успешную оплату 499 ₽?')) confirmPay();
+    }
   });
+  $('pay-cancel').addEventListener('click', () => modal.close());
+  $('pay-confirm').addEventListener('click', () => { modal.close(); confirmPay(); });
 
   /* режим генерации */
   let mode = 'demo';
@@ -187,15 +204,22 @@ function generateDemo(r) {
     html += `<h3>Ваш контекст</h3><p>Из уточняющего опросника: ${esc(ctx.join('; '))}. Этот фон стоит держать в уме — профиль отражает не только устойчивые черты, но и текущее состояние.</p>`;
   }
 
-  html += `<h3>Шкалы профиля</h3>`;
-  for (const p of parts) {
-    html += `<p><strong class="mono">${p.code} · T=${p.t}</strong> — <strong>${esc(p.name)}.</strong> ${esc(p.text)}</p>`;
-  }
+  if (r.validity.status === 'invalid') {
+    // при недостоверном профиле пошкальный разбор некорректен — не выводим его
+    html += `<h3>Почему разбор по шкалам не приводится</h3>
+      <p>Оценочные показатели говорят о том, что профиль в этот раз получился недостоверным — например, из-за большого числа ответов «Не знаю», усталости или отвлечения. Интерпретировать значения шкал в такой ситуации было бы некорректно и нечестно по отношению к вам.</p>
+      <p>Рекомендуем пройти тест повторно в спокойной обстановке, отвечая по первому впечатлению. Повторная генерация разбора для нового результата в демо-версии бесплатна.</p>`;
+  } else {
+    html += `<h3>Шкалы профиля</h3>`;
+    for (const p of parts) {
+      html += `<p><strong class="mono">${p.code} · T=${p.t}</strong> — <strong>${esc(p.name)}.</strong> ${esc(p.text)}</p>`;
+    }
 
-  if (combos.length) {
-    html += `<h3>Сочетания шкал</h3>`;
-    for (const c of combos) {
-      html += `<p><strong class="mono">${c.scales.join(' + ')}</strong> — ${esc(c.text)}</p>`;
+    if (combos.length) {
+      html += `<h3>Сочетания шкал</h3>`;
+      for (const c of combos) {
+        html += `<p><strong class="mono">${c.scales.map(s => s.replace('-low', '↓')).join(' + ')}</strong> — ${esc(c.text)}</p>`;
+      }
     }
   }
 
