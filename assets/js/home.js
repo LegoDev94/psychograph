@@ -1,19 +1,20 @@
-/* Главная: шапка/футер + демо-график в герое */
-import { initChrome, chartColors } from './common.js';
-import { TEST } from '../data/mmil.js';
-import { buildProfileOption, mountProfileChart } from './profile-chart.js';
+/* Главная: шапка/футер, «живой психограф» в герое, появление секций при скролле */
+import { initChrome } from './common.js';
+import { initHeroGraph } from './hero-graph.js';
 
 initChrome('home');
+initHeroGraph();
 
-/* демонстрационный профиль — умеренно «живой», в пределах нормы с одним акцентом */
-const DEMO_T = { L: 46, F: 52, K: 55, 1: 48, 2: 61, 3: 54, 4: 45, 5: 50, 6: 57, 7: 66, 8: 58, 9: 43, 0: 60 };
-
-const el = document.getElementById('hero-chart');
-if (el && window.echarts) {
-  mountProfileChart(el, () => buildProfileOption({
-    scales: TEST.scales,
-    t: DEMO_T,
-    colors: chartColors(),
-    compact: true,
-  }));
+/* мягкое появление карточек при скролле */
+if ('IntersectionObserver' in window && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+  const io = new IntersectionObserver(entries => {
+    for (const e of entries) {
+      if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+    }
+  }, { threshold: 0.12, rootMargin: '0px 0px -40px' });
+  document.querySelectorAll('.section .card, .section .faq-item, .scale-strip .scale-chip').forEach((node, i) => {
+    node.classList.add('rise');
+    node.style.setProperty('--rise-d', `${(i % 6) * 70}ms`);
+    io.observe(node);
+  });
 }

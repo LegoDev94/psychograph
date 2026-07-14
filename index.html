@@ -37,11 +37,33 @@
         </div>
       </div>
       <div class="hero-chart-wrap reveal d2">
-        <span class="stamp hero-chart-note">демо-профиль</span>
-        <figure class="hero-chart-frame" style="margin:0">
-          <div id="hero-chart" role="img" aria-label="Пример личностного профиля ММИЛ: линия T-баллов по 13 шкалам с коридором нормы 30–70"></div>
+        <figure class="hero-chart-frame psy-frame" style="margin:0" id="psy-frame">
+          <div class="psy-topcap">
+            <span class="psy-rec"><span class="psy-rec-dot" aria-hidden="true"></span> запись профиля</span>
+            <span class="psy-archetype" id="psy-archetype" aria-hidden="true">обр. № 01 · «уравновешенный»</span>
+          </div>
+          <div class="psy-stage" id="psy-stage">
+            <svg id="psy-svg" role="img" aria-label="Живой пример личностного профиля ММИЛ: линия T-баллов по 13 шкалам с коридором нормы 30–70; профиль перестраивается в ответ на утверждения мини-демо"></svg>
+            <div class="psy-tip" id="psy-tip" hidden></div>
+          </div>
           <figcaption class="frame-cap"><span>Рис. 1 — личностный профиль</span><span>T-баллы · нормы по полу</span></figcaption>
         </figure>
+
+        <div class="psy-quiz card card-paper reveal d4">
+          <div class="psy-quiz-head">
+            <span class="psy-quiz-title">Попробуйте вживую</span>
+            <span class="psy-quiz-step mono" id="psy-quiz-step">1 / 3</span>
+          </div>
+          <div id="psy-quiz-body" aria-live="polite">
+            <p class="psy-quiz-q" id="psy-quiz-q"></p>
+            <div class="psy-quiz-answers" role="group" aria-label="Ответ на утверждение">
+              <button class="answer-btn" type="button" data-a="v">Верно</button>
+              <button class="answer-btn" type="button" data-a="f">Неверно</button>
+              <button class="answer-btn" type="button" data-a="u">Не знаю</button>
+            </div>
+          </div>
+          <p class="psy-quiz-note">Игрушечная демонстрация механики — не измерение.</p>
+        </div>
       </div>
     </div>
   </section>
@@ -203,7 +225,6 @@
 
 <footer id="site-footer"></footer>
 
-<script src="assets/vendor/echarts.min.js"></script>
 <script type="module" src="assets/js/home.js"></script>
 </body>
 </html>
