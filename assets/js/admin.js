@@ -98,8 +98,10 @@ function buildSeries(days) {
   return out.slice(-days);
 }
 
-function dashboard() {
+function dashboard(s) {
   const price = getSettings().price;
+  const recentOrders = collectOrders().slice(0, 5);
+  const recentLog = getLog().slice(0, 6);
   view.innerHTML = `
     ${section('Дашборд', 'А-01')}
     <div class="admin-toolbar">
@@ -110,9 +112,41 @@ function dashboard() {
     </div>
     <div class="stat-tiles" id="dash-tiles"></div>
     <figure class="chart-frame" style="margin:22px 0 0">
-      <div id="dash-chart" style="width:100%;height:320px" role="img" aria-label="Динамика прохождений и заказов по дням"></div>
+      <div id="dash-chart" style="width:100%;height:360px" role="img" aria-label="Динамика прохождений и заказов по дням"></div>
       <figcaption class="frame-cap"><span>Прохождения и заказы по дням</span><span id="dash-cap"></span></figcaption>
-    </figure>`;
+    </figure>
+    <div class="admin-grid-2">
+      <div>
+        <h2 class="admin-h2">Последние заказы</h2>
+        <div class="table-frame"><table class="scale-table"><thead>
+          <tr><th scope="col">Заказ</th><th scope="col">Дата</th><th scope="col">Статус</th></tr></thead>
+          <tbody>${recentOrders.map(o => `<tr>
+            <td class="num">${o.id}</td>
+            <td>${fmtDate(o.date)}</td>
+            <td><span class="badge ${orderBadge(o.status)}">${o.status}</span></td>
+          </tr>`).join('')}</tbody></table></div>
+        <a class="admin-more" href="#orders">Все заказы →</a>
+      </div>
+      <div>
+        ${s.role === 'admin' ? `
+        <h2 class="admin-h2">Последние действия</h2>
+        ${recentLog.length ? `<div class="table-frame"><table class="scale-table"><tbody>
+          ${recentLog.map(e => `<tr>
+            <td class="num" style="white-space:nowrap">${fmtDate(e.ts)}</td>
+            <td>${esc(e.action)}</td>
+          </tr>`).join('')}</tbody></table></div>
+        <a class="admin-more" href="#log">Весь журнал →</a>` : '<p class="muted small">Журнал пока пуст.</p>'}
+        ` : `
+        <h2 class="admin-h2">Быстрые действия</h2>
+        <div class="card">
+          <p class="small muted">Доступно редактору:</p>
+          <div style="display:flex;gap:10px;flex-wrap:wrap">
+            <a class="btn btn-soft btn-sm" href="#constructor">Конструктор теста</a>
+            <a class="btn btn-soft btn-sm" href="#content">Контент и SEO</a>
+          </div>
+        </div>`}
+      </div>
+    </div>`;
 
   const render = days => {
     if (!$('dash-tiles')) return; // раздел уже закрыт
@@ -453,7 +487,9 @@ function constructorView(s) {
 }
 
 /* ================= ЗАКАЗЫ ================= */
-function orders(s) {
+const orderBadge = st => ({ 'выполнен': 'badge-ok', 'оплачен': 'badge-accent', 'возврат': 'badge-danger', 'в очереди': 'badge-warn' }[st] || '');
+
+function collectOrders() {
   const statusOv = store.get('admin.orderStatus', {});
   const local = results.list().filter(r => r.paid).map(r => ({
     id: 'ORD-' + r.id.slice(-6).toUpperCase(),
@@ -475,9 +511,13 @@ function orders(s) {
       status: statusOv['ORD-DEMO' + String(i + 1).padStart(2, '0')] || (r1 < 0.8 ? 'выполнен' : r2 < 0.5 ? 'оплачен' : 'возврат'),
     };
   });
-  const all = [...local, ...synth].sort((a, b) => b.date - a.date);
+  return [...local, ...synth].sort((a, b) => b.date - a.date);
+}
+
+function orders(s) {
+  const all = collectOrders();
   const price = getSettings().price;
-  const badge = st => ({ 'выполнен': 'badge-ok', 'оплачен': 'badge-accent', 'возврат': 'badge-danger', 'в очереди': 'badge-warn' }[st] || '');
+  const badge = orderBadge;
 
   view.innerHTML = `
     ${section('Заказы', 'А-03')}
