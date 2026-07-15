@@ -1,7 +1,10 @@
 /* Сравнение двух результатов: две линии на одном графике + таблица изменений */
 import { initChrome, results, chartColors, fmtDate, toast } from './common.js';
-import { TEST } from '../data/mmil.js';
+import { TEST as BASE_TEST } from '../data/mmil.js';
+import { withOverride } from './test-store.js';
 import { buildCompareOption, mountProfileChart } from './profile-chart.js';
+
+const TEST = withOverride(BASE_TEST);
 
 initChrome('history');
 

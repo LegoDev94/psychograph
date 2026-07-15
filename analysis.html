@@ -46,7 +46,7 @@
         <div class="card card-paper" style="max-width:560px">
           <h3>Оплата интерпретации</h3>
           <div style="display:flex;align-items:baseline;gap:12px;margin:6px 0 14px">
-            <span class="price" style="font-family:var(--font-display);font-size:2rem;font-weight:700">499 ₽</span>
+            <span class="price" id="pay-price" style="font-family:var(--font-display);font-size:2rem;font-weight:700">499 ₽</span>
             <span class="muted small">разовая услуга · без подписки</span>
           </div>
           <ul style="margin:0 0 10px;padding-left:1.1em" class="small">
@@ -129,7 +129,7 @@
   <h3 id="pay-modal-title" style="margin-bottom:6px">Имитация эквайринга</h3>
   <p class="small muted" id="pay-modal-desc">Демонстрация сценария: заказ → страница банка → callback об успешной оплате → доступ к анализу.</p>
   <div class="card" style="padding:14px 16px;margin:10px 0 4px">
-    <div style="display:flex;justify-content:space-between;font-size:.92rem"><span>Расширенная ИИ-интерпретация</span><b class="mono">499 ₽</b></div>
+    <div style="display:flex;justify-content:space-between;font-size:.92rem"><span>Расширенная ИИ-интерпретация</span><b class="mono" id="modal-price">499 ₽</b></div>
     <div style="display:flex;justify-content:space-between;font-size:.8rem;color:var(--ink-3);margin-top:4px"><span>Чек 54-ФЗ (демо)</span><span class="mono">№ 0000-DEMO</span></div>
   </div>
   <div class="modal-actions">

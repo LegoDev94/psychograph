@@ -1,7 +1,10 @@
 /* Прохождение теста (M2): выбор формы, согласия, автосохранение, навигация, защита от повторной отправки */
 import { initChrome, store, results, uid, toast, fmtDate } from './common.js';
-import { TEST } from '../data/mmil.js';
+import { TEST as BASE_TEST } from '../data/mmil.js';
+import { withOverride } from './test-store.js';
 import { scoreAttempt } from './engine.js';
+
+const TEST = withOverride(BASE_TEST);
 
 initChrome('');
 

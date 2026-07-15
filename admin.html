@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#FAF7F2" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#15181C" media="(prefers-color-scheme: dark)">
+<title>Админ-панель — Психограф</title>
+<meta name="description" content="Административная панель сервиса Психограф (демо): конструктор теста, дашборд, заказы, настройки.">
+<meta name="robots" content="noindex">
+<link rel="icon" href="favicon.svg" type="image/svg+xml">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon.png">
+<link rel="stylesheet" href="assets/fonts/fonts.css">
+<link rel="stylesheet" href="assets/css/main.css">
+<script>(function(){try{var t=JSON.parse(localStorage.getItem('pg.theme')||'null');if(t!=='dark'&&t!=='light'){t=matchMedia('(prefers-color-scheme: dark)').matches?'dark':'light'}document.documentElement.dataset.theme=t}catch(e){}})()</script>
+</head>
+<body>
+
+<!-- ВХОД -->
+<main id="admin-login" class="admin-login">
+  <div class="card card-paper admin-login-card">
+    <div class="overline"><span class="num">М8</span> Служебный вход <span class="stamp tag-demo">демо</span></div>
+    <h1 style="font-size:1.6rem">Админ-панель «Психограф»</h1>
+    <p class="muted small">Демонстрация фронта админ-панели по ТЗ. Данные живут в вашем браузере;
+      правки конструктора и настроек реально применяются к публичным страницам этого устройства.</p>
+    <form id="login-form" class="admin-login-form">
+      <div class="field">
+        <label class="small muted" for="login-email">E-mail</label>
+        <input type="email" id="login-email" required placeholder="admin@psychograph.example" autocomplete="username">
+      </div>
+      <div class="field">
+        <label class="small muted" for="login-pass">Пароль <span class="mono">(в демо: demo)</span></label>
+        <input type="password" id="login-pass" required placeholder="demo" autocomplete="current-password">
+      </div>
+      <fieldset class="field" style="border:none;margin:0;padding:0">
+        <legend class="small muted" style="padding:0;margin-bottom:6px">Роль (разграничение прав)</legend>
+        <div class="radio-line">
+          <label><input type="radio" name="role" value="admin" checked>Администратор</label>
+          <label><input type="radio" name="role" value="editor">Редактор</label>
+        </div>
+      </fieldset>
+      <p class="small" id="login-error" style="color:var(--danger)" hidden>Неверный пароль. В демо-версии пароль — <b class="mono">demo</b>.</p>
+      <button class="btn btn-primary btn-lg" type="submit">Войти</button>
+      <a class="small" href="index.html">← на сайт</a>
+    </form>
+  </div>
+</main>
+
+<!-- ПАНЕЛЬ -->
+<div id="admin-app" class="admin-shell" hidden>
+  <aside class="admin-side">
+    <a class="brand" href="index.html" style="margin:0 0 4px">
+      <svg width="26" height="26" viewBox="0 0 30 30" fill="none" aria-hidden="true">
+        <rect class="brand-mark-frame" x="1.5" y="1.5" width="27" height="27" rx="4" stroke-width="1.5"/>
+        <polyline class="brand-mark-line" points="5,20 9,12 13,17 17,8 21,15 25,11" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+      </svg>
+      <span>Психограф</span>
+    </a>
+    <span class="badge badge-accent" style="align-self:flex-start">админ · демо</span>
+    <nav class="admin-nav" id="admin-nav" aria-label="Разделы админ-панели">
+      <a href="#dashboard" data-route="dashboard">Дашборд</a>
+      <a href="#constructor" data-route="constructor">Конструктор теста</a>
+      <a href="#orders" data-route="orders">Заказы</a>
+      <a href="#content" data-route="content">Контент и SEO</a>
+      <a href="#users" data-route="users">Пользователи</a>
+      <a href="#settings" data-route="settings" data-role="admin">Настройки</a>
+      <a href="#log" data-route="log" data-role="admin">Журнал действий</a>
+    </nav>
+    <div class="admin-side-foot">
+      <span class="small muted" id="admin-actor">…</span>
+      <button class="btn btn-ghost btn-sm" id="btn-logout" type="button">Выйти</button>
+    </div>
+  </aside>
+  <main class="admin-main" id="admin-view" tabindex="-1"></main>
+</div>
+
+<script src="assets/vendor/echarts.min.js"></script>
+<script type="module" src="assets/js/admin.js"></script>
+</body>
+</html>

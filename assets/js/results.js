@@ -1,8 +1,11 @@
 /* Результат (M3): перьевой график-профиль, таблица шкал, достоверность, экспорт, бесплатное резюме */
 import { initChrome, results, fmtDate, toast, esc } from './common.js';
-import { TEST } from '../data/mmil.js';
+import { TEST as BASE_TEST } from '../data/mmil.js';
+import { withOverride } from './test-store.js';
 import { tBand, BAND_LABELS } from './engine.js';
 import { mountResultProfile, exportProfilePNG } from './psy-render.js';
+
+const TEST = withOverride(BASE_TEST);
 
 initChrome('history');
 

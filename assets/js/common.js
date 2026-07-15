@@ -74,6 +74,13 @@ const NAV_ITEMS = [
 ];
 
 export function initChrome(active = '') {
+  /* SEO-правки из админ-панели (демо M8): применяются на этом устройстве */
+  const seoMap = store.get('admin.seo', {});
+  const page = location.pathname.split('/').pop() || 'index.html';
+  const seo = seoMap[page];
+  if (seo?.title) document.title = seo.title;
+  if (seo?.description) document.querySelector('meta[name="description"]')?.setAttribute('content', seo.description);
+
   if (!document.querySelector('.skip-link')) {
     const skip = document.createElement('a');
     skip.className = 'skip-link';
@@ -151,6 +158,7 @@ export function initChrome(active = '') {
             <ul>
               <li><a href="mailto:hello@psychograph.example">hello@psychograph.example</a></li>
               <li><a href="https://github.com/LegoDev94" rel="noopener">GitHub</a></li>
+              <li><a href="admin.html">Админ-панель (демо)</a></li>
             </ul>
           </div>
         </div>

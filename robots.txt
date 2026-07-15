@@ -4,5 +4,6 @@ Disallow: /results.html
 Disallow: /analysis.html
 Disallow: /history.html
 Disallow: /compare.html
+Disallow: /admin.html
 
 Sitemap: https://legodev94.github.io/psychograph/sitemap.xml

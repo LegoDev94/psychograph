@@ -1,9 +1,12 @@
 /* Сборка HTML расширенного разбора по интерпретационной библиотеке.
    Используется демо-режимом генерации (analysis.js) и страницей-примером (example.js). */
 import { esc, fmtDate } from './common.js';
-import { TEST } from '../data/mmil.js';
+import { TEST as BASE_TEST } from '../data/mmil.js';
 import { INTERP } from '../data/interp.js';
+import { withOverride } from './test-store.js';
 import { buildInterpretation } from './engine.js';
+
+const TEST = withOverride(BASE_TEST);
 
 export function buildDemoReportHtml(r, { example = false } = {}) {
   const { parts, combos } = buildInterpretation(INTERP, r, TEST.scales);

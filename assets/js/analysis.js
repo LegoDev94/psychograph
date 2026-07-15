@@ -1,8 +1,12 @@
 /* ИИ-анализ (M4) + демо-оплата (M5): опросник 15 вопросов → оплата → генерация → отчёт */
 import { initChrome, results, fmtDate, toast, esc, openModal } from './common.js';
-import { TEST } from '../data/mmil.js';
+import { TEST as BASE_TEST } from '../data/mmil.js';
 import { INTERP } from '../data/interp.js';
+import { withOverride, getSettings } from './test-store.js';
 import { buildDemoReportHtml } from './report.js';
+
+const TEST = withOverride(BASE_TEST);
+const SETTINGS = getSettings();
 
 initChrome('history');
 
@@ -86,6 +90,10 @@ function showStep(name) {
 }
 
 function init(r) {
+  /* цена управляется в админ-панели (демо M8) */
+  $('pay-price').textContent = `${SETTINGS.price} ₽`;
+  $('modal-price').textContent = `${SETTINGS.price} ₽`;
+
   const formLabel = r.form === 'male' ? 'мужская форма' : 'женская форма';
   $('analysis-meta').textContent = `Профиль от ${fmtDate(r.date)} (${formLabel}). Разбор строится на T-баллах, флагах достоверности и ответах опросника — данные передаются без имени и контактов.`;
 
@@ -123,7 +131,7 @@ function init(r) {
   };
   $('btn-pay').addEventListener('click', () => {
     if (!openModal(modal)) {
-      if (window.confirm('Демо-режим: имитировать успешную оплату 499 ₽?')) confirmPay();
+      if (window.confirm(`Демо-режим: имитировать успешную оплату ${SETTINGS.price} ₽?`)) confirmPay();
     }
   });
   $('pay-cancel').addEventListener('click', () => modal.close());
@@ -192,20 +200,21 @@ async function generateDeepSeek(r) {
     questionnaire: r.questionnaire || {},
   };
 
-  const system = `Ты — опытный клинический психолог. Составь развёрнутую, бережную интерпретацию личностного профиля по методике ММИЛ (адаптация MMPI) на русском языке.
+  /* промпт, модель и лимиты настраиваются в админ-панели (M4/M8) */
+  const system = SETTINGS.deepseek.prompt || `Ты — опытный клинический психолог. Составь развёрнутую, бережную интерпретацию личностного профиля по методике ММИЛ (адаптация MMPI) на русском языке.
 Правила: не ставь диагнозов и не используй ярлыки; формулировки «может указывать», «часто отражает»; T-баллы 30–70 — коридор нормы, 60–70 — акцентуация, >70 — выраженное повышение; учитывай флаги достоверности и контекст опросника; структура: краткое вступление, разбор значимых шкал, сочетания шкал, ресурсы и бережные рекомендации, завершение; в конце обязательно укажи, что результат не является медицинским диагнозом. Форматируй markdown с заголовками ##.`;
 
   const res = await fetch('https://api.deepseek.com/chat/completions', {
     method: 'POST',
     headers: { 'Content-Type': 'application/json', 'Authorization': 'Bearer ' + key },
     body: JSON.stringify({
-      model: 'deepseek-chat',
+      model: SETTINGS.deepseek.model || 'deepseek-chat',
       messages: [
         { role: 'system', content: system },
         { role: 'user', content: 'Обезличенные данные тестирования:\n' + JSON.stringify(anonymized, null, 2) },
       ],
       temperature: 0.7,
-      max_tokens: 4000,
+      max_tokens: SETTINGS.deepseek.maxTokens || 4000,
     }),
   }).catch(() => { throw new Error('сеть/CORS недоступны — в боевой версии вызов выполняет сервер'); });
 
