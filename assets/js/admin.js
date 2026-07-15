@@ -195,7 +195,7 @@ function constructorView(s) {
       <input type="search" id="item-search" class="admin-search" placeholder="Поиск по тексту утверждения…" aria-label="Поиск по утверждениям">
       <span class="small muted">${test.items.length} пунктов · клик по ключу меняет направление (Т↔F)</span>
     </div>
-    <div style="overflow-x:auto"><table class="scale-table admin-items"><thead>
+    <div class="table-frame"><table class="scale-table admin-items"><thead>
       <tr><th scope="col">№</th><th scope="col">Утверждение</th><th scope="col">Ключи</th></tr>
     </thead><tbody id="items-body"></tbody></table></div>`;
 
@@ -246,7 +246,7 @@ function constructorView(s) {
   /* --- Шкалы и нормы --- */
   $('ctab-1').innerHTML = `
     <p class="small muted">Нормы: T = 50 + 10·(X − M)/σ. Изменения применяются к новым расчётам.</p>
-    <div style="overflow-x:auto"><table class="scale-table"><thead>
+    <div class="table-frame"><table class="scale-table"><thead>
       <tr><th scope="col">Шкала</th><th scope="col">Группа</th><th scope="col">M муж.</th><th scope="col">σ муж.</th><th scope="col">M жен.</th><th scope="col">σ жен.</th></tr>
     </thead><tbody>
       ${test.scales.map(sc => `<tr>
@@ -332,7 +332,7 @@ function constructorView(s) {
         <div class="card" style="margin-top:14px">
           <p class="small" style="margin-bottom:10px">Форма: <b>${form === 'male' ? 'мужская' : 'женская'}</b> ·
             достоверность: <span class="badge ${badge}</span> · F−K = ${r.validity.fk}</p>
-          <div style="overflow-x:auto"><table class="scale-table"><thead>
+          <div class="table-frame"><table class="scale-table"><thead>
             <tr><th scope="col">Шкала</th><th scope="col">Сырой</th><th scope="col">С коррекцией</th><th scope="col">T</th></tr></thead>
             <tbody>${current.scales.map(sc => `<tr>
               <td class="num"><b>${sc.code}</b></td>
@@ -482,7 +482,7 @@ function orders(s) {
   view.innerHTML = `
     ${section('Заказы', 'А-03')}
     <p class="muted">Оплаты ИИ-интерпретаций: локальные (из этого браузера) и демонстрационные строки.</p>
-    <div style="overflow-x:auto"><table class="scale-table"><thead>
+    <div class="table-frame"><table class="scale-table"><thead>
       <tr><th scope="col">Заказ</th><th scope="col">Дата</th><th scope="col">Покупатель</th><th scope="col">Сумма</th><th scope="col">Статус</th><th scope="col">Действия</th></tr>
     </thead><tbody>
       ${all.map(o => `<tr>
@@ -526,7 +526,7 @@ function content(s) {
     ${section('Контент и SEO', 'А-04')}
     <p class="muted" style="max-width:70ch">SEO-поля применяются к страницам этого устройства при загрузке
       (в боевой версии — рендерятся сервером). Пустое поле — заводское значение.</p>
-    <div style="overflow-x:auto"><table class="scale-table"><thead>
+    <div class="table-frame"><table class="scale-table"><thead>
       <tr><th scope="col">Страница</th><th scope="col">Title</th><th scope="col">Description</th></tr>
     </thead><tbody>
       ${PAGES.map(([file, name]) => `<tr>
@@ -557,7 +557,7 @@ function users(s) {
   const blocked = store.get('admin.blocked', []);
   view.innerHTML = `
     ${section('Пользователи', 'А-05', '<span class="badge">демо-данные</span>')}
-    <div style="overflow-x:auto"><table class="scale-table"><thead>
+    <div class="table-frame"><table class="scale-table"><thead>
       <tr><th scope="col">E-mail</th><th scope="col">Роль</th><th scope="col">Регистрация</th><th scope="col">Прохождений</th><th scope="col">Покупок</th><th scope="col">Статус</th><th scope="col"></th></tr>
     </thead><tbody>
       ${base.map(u => {
@@ -626,7 +626,7 @@ function logView() {
   const log = getLog();
   view.innerHTML = `
     ${section('Журнал действий', 'А-07')}
-    ${log.length ? `<div style="overflow-x:auto"><table class="scale-table"><thead>
+    ${log.length ? `<div class="table-frame"><table class="scale-table"><thead>
       <tr><th scope="col">Когда</th><th scope="col">Кто</th><th scope="col">Действие</th></tr></thead>
       <tbody>${log.map(e => `<tr><td class="num" style="white-space:nowrap">${fmtDate(e.ts)}</td><td>${esc(e.actor)}</td><td>${esc(e.action)}</td></tr>`).join('')}</tbody>
     </table></div>` : '<p class="muted">Журнал пуст.</p>'}`;

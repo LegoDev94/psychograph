@@ -1035,9 +1035,29 @@ dialog.modal::backdrop { background: rgba(12, 14, 18, 0.5); backdrop-filter: blu
 .admin-nav a:hover { color: var(--ink); background: var(--paper-3); }
 .admin-nav a.active { color: var(--accent-ink); border-left-color: var(--accent); background: var(--accent-soft); font-weight: 600; }
 .admin-side-foot { margin-top: auto; display: flex; flex-direction: column; gap: 8px; padding-top: 14px; border-top: 1px solid var(--hairline); }
-.admin-main { padding: clamp(22px, 3vw, 40px); min-width: 0; }
+.admin-side-foot .small { overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+.admin-main {
+  padding: clamp(22px, 3vw, 44px);
+  min-width: 0;
+  max-width: 1240px; /* на широких мониторах контент не растягивается во всю ширину */
+}
 .admin-main:focus { outline: none; }
-.admin-h1 { font-size: clamp(1.5rem, 2.6vw, 2rem); }
+.admin-h1 { font-size: clamp(1.5rem, 2.6vw, 2rem); margin-bottom: 8px; }
+
+/* таблицы админки — в рамке-карточке */
+.table-frame {
+  overflow-x: auto;
+  border: 1px solid var(--hairline);
+  border-radius: var(--radius-lg);
+  background: var(--paper);
+  box-shadow: var(--shadow-card);
+  margin-top: 6px;
+}
+.table-frame .scale-table th:first-child,
+.table-frame .scale-table td:first-child { padding-left: 18px; }
+.table-frame .scale-table th:last-child,
+.table-frame .scale-table td:last-child { padding-right: 18px; }
+.table-frame .scale-table tr:last-child td { border-bottom: none; }
 
 .admin-toolbar { display: flex; flex-wrap: wrap; gap: 14px; align-items: center; margin: 16px 0; }
 .admin-search {

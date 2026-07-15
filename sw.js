@@ -1,7 +1,7 @@
 /* Психограф — офлайн-кэш.
-   Страницы: сеть в приоритете (свежие деплои), кэш — как фолбэк.
-   Ассеты (css/js/шрифты/иконки): stale-while-revalidate. */
-const CACHE = 'pg-v1';
+   Страницы, CSS и JS: сеть в приоритете (деплои видны сразу), кэш — фолбэк.
+   Тяжёлая статика (шрифты, изображения, vendor): stale-while-revalidate. */
+const CACHE = 'pg-v2';
 
 self.addEventListener('install', () => self.skipWaiting());
 
@@ -17,20 +17,25 @@ self.addEventListener('fetch', e => {
   const url = new URL(e.request.url);
   if (e.request.method !== 'GET' || url.origin !== location.origin) return;
 
-  if (e.request.destination === 'document') {
-    /* network-first: не показываем устаревшие страницы после деплоя */
+  const dest = e.request.destination;
+  const networkFirst = dest === 'document' || dest === 'style' || dest === 'script' || dest === 'manifest';
+
+  if (networkFirst) {
     e.respondWith(
       fetch(e.request)
         .then(res => {
-          if (res.ok) caches.open(CACHE).then(c => c.put(e.request, res.clone()));
-          return res.clone();
+          if (res.ok) {
+            const copy = res.clone();
+            caches.open(CACHE).then(c => c.put(e.request, copy));
+          }
+          return res;
         })
         .catch(() => caches.match(e.request))
     );
     return;
   }
 
-  /* stale-while-revalidate для статики */
+  /* stale-while-revalidate для шрифтов/картинок/vendor */
   e.respondWith(
     caches.open(CACHE).then(async c => {
       const cached = await c.match(e.request);
